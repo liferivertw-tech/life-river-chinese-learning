@@ -31,6 +31,7 @@ function render(){
  const ordered=[...grouped.primary,...grouped.fallback,...grouped.other];
  for(const r of ordered){
   const card=document.createElement('article');card.className='resource-card';
+  if(currentLocale==='th'){const groupLabel=document.createElement('p');groupLabel.className='resource-language-label';groupLabel.textContent=grouped.primary.includes(r)?thaiUI.native:grouped.fallback.includes(r)?thaiUI.english:thaiUI.other;card.append(groupLabel);}
   const art=document.createElement('div');art.className='resource-art';art.textContent=r.category==='tocfl'?'🎓':'📚';
   const body=document.createElement('div');body.className='resource-body';
   const h=document.createElement('h3');h.textContent=r.title;
