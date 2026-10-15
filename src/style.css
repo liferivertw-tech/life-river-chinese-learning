@@ -2,3 +2,35 @@
 
 /* LIFE RIVER approved brand asset integration */
 .logo-container{display:flex;align-items:center}.brand-logo{width:clamp(135px,15vw,210px);height:auto;display:block;object-fit:contain}.brand-logo[hidden],.logo-mark[hidden]{display:none}.brand-caption strong{font-size:.95rem;letter-spacing:0}.brand-caption small{font-size:.75rem}.brand{gap:.7rem}@media(max-width:720px){.brand-logo{width:145px}.brand-caption strong{font-size:.8rem}.brand-caption small{font-size:.7rem}}
+
+/* BUILD 07: responsive mobile experience, shared desktop/mobile content */
+.language-picker select,.language-picker select option{color:#16345a!important;background-color:#fff!important;color-scheme:light}
+.language-picker select:focus-visible,.menu-toggle:focus-visible,.quick-links button:focus-visible{outline:3px solid #1c6ed4;outline-offset:3px}
+.menu-toggle{display:none;border:0;background:#eff5ff;color:#113b7a;border-radius:12px;padding:.55rem .85rem;font-size:1.5rem;cursor:pointer}
+.quick-links{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin:-.6rem auto 1.7rem;max-width:1150px;color:#204b83;font-size:.9rem}
+.quick-links button{border:0;border-radius:20px;background:#e5efff;color:#214d87;padding:.45rem .8rem;cursor:pointer}
+@media(max-width:720px){
+.site-header{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:.5rem;align-items:center;padding:.7rem .9rem}
+.brand{min-width:0;gap:.4rem}.brand-logo{width:clamp(105px,29vw,145px)}.brand-caption strong{font-size:.65rem}.brand-caption small{font-size:.6rem;line-height:1.25}
+.menu-toggle{display:block;grid-column:2;grid-row:1}.language-picker{grid-column:3;grid-row:1;gap:0}.language-picker select{max-width:108px;font-size:.8rem;padding:.5rem .25rem}
+.site-nav{display:none;grid-column:1/-1;grid-row:2;order:initial;flex-direction:column;align-items:stretch;gap:0;width:100%;background:#f4f8ff;border:1px solid #e1ebfa;border-radius:12px;padding:.35rem}
+.site-nav.open{display:flex}.site-nav a{padding:.8rem;border-radius:8px}.site-nav a:hover{background:#e2efff}
+.hero{min-height:230px;padding:1.4rem .8rem 2.6rem;border-radius:0 0 14px 14px}
+.hero h1{font-size:clamp(1.8rem,8vw,3rem);letter-spacing:.04em}
+.hero-eyebrow{font-size:.62rem;letter-spacing:.05em}.hero-en{font-size:1rem}
+.hero-intro{font-size:.88rem;line-height:1.5}.hero-sub{font-size:.73rem;line-height:1.5}
+.search-panel{margin:-21px auto 1.3rem;gap:.55rem}
+.search-box{flex-basis:100%;min-width:0;padding:.5rem .8rem}.search-box input{min-width:0;font-size:.9rem}
+.search-button,.filter-link{padding:.75rem .8rem;font-size:.9rem}
+.quick-links{margin:0 0 1.5rem;gap:.4rem;font-size:.8rem}.quick-links button{padding:.35rem .6rem}
+.section-heading h2{font-size:1.15rem}.section-heading a{font-size:.8rem;white-space:nowrap}
+.category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}
+.category-tile{min-height:110px;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:.25rem;padding:.7rem .35rem}
+.tile-icon{font-size:2rem;min-width:0}.tile-title{font-size:.93rem}.tile-arrow{display:none}
+.directory,.resources{margin:1.6rem 0}
+.resources{padding:1rem}.resource-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+.resource-art{height:95px;font-size:2.8rem}.resource-body{padding:.7rem}.resource-body h3{font-size:.95rem;overflow-wrap:anywhere}.resource-body p{font-size:.78rem}.resource-tags span{font-size:.67rem}.resource-body a{font-size:.8rem}
+.filters{gap:.5rem}.filters label{flex:1;min-width:120px}.filters select{width:100%;min-width:0}
+.editorial-note{font-size:.7rem}
+}
+@media(max-width:390px){.brand-caption{display:none}.language-picker select{max-width:100px}.resource-grid{grid-template-columns:1fr}.category-tile{min-height:96px}}
