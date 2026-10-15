@@ -34,3 +34,5 @@
 .editorial-note{font-size:.7rem}
 }
 @media(max-width:390px){.brand-caption{display:none}.language-picker select{max-width:100px}.resource-grid{grid-template-columns:1fr}.category-tile{min-height:96px}}
+
+.resource-language-label{font-size:.78rem;font-weight:700;color:#24568b;background:#edf5ff;padding:.5rem .8rem;margin:0}.language-resource-notice{grid-column:1/-1;background:#eef6ff;border-radius:9px;padding:.85rem;color:#244a72;line-height:1.5}
