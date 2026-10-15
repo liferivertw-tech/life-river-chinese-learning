@@ -1,6 +1,6 @@
 import './style.css';
 import {thaiUI} from './thai-ui.js';
-import {groupResources} from './resource-ranking.js';
+import {groupResources,matchResource} from './resource-ranking.js';
 import {categories,catalog} from './catalog.js';
 import {localeMessages,isLocalized} from './i18n.js';
 
@@ -25,7 +25,7 @@ const category=document.querySelector('#category');
 const level=document.querySelector('#level');
 function render(){
  const q=query.value.trim().toLocaleLowerCase();
- const rows=catalog.filter(r=>(!category.value||r.category===category.value)&&(!level.value||r.level===level.value)&&(!q||[r.title,r.provider,r.summary,r.category].some(x=>x.toLocaleLowerCase().includes(q))));
+ const rows=catalog.filter(r=>(!category.value||r.category===category.value)&&(!level.value||r.level===level.value)&&matchResource(r,q,currentLocale==='th'?thaiUI.categoryNames[r.category]:categories.find(x=>x[0]===r.category)?.[1]));
  results.replaceChildren();
  const grouped=groupResources(rows,currentLocale);
  const ordered=[...grouped.primary,...grouped.fallback,...grouped.other];
@@ -60,6 +60,7 @@ function setLocale(code){
   const nav=document.querySelectorAll('.site-nav a');[d.navHome,d.navCategories,d.navFeatured,d.navAbout].forEach((v,i)=>{nav[i].textContent=v;});
   document.querySelector('.language-picker span').textContent=d.langLabel;
   document.querySelector('.hero h1').textContent=d.heroTitle;
+  document.querySelector('.hero-art-right').textContent='ไต้หวัน';
   document.querySelector('.hero-en').textContent=d.heroEnglish;
   document.querySelector('.hero-intro').textContent=d.heroIntro;
   document.querySelector('.hero-sub').textContent=d.heroSub;
@@ -67,7 +68,7 @@ function setLocale(code){
   document.querySelector('.search-button').textContent=d.searchButton;
   document.querySelector('.filter-link').textContent=d.advanced;
   document.querySelector('.quick-links span').textContent='🔥 '+d.popular;
-  const quick=document.querySelectorAll('.quick-links button');['TOCFL','การออกเสียง','คำศัพท์','ชีวิตในไต้หวัน'].forEach((v,i)=>{quick[i].textContent=v;});
+  const quick=document.querySelectorAll('.quick-links button');['TOCFL','การออกเสียง','คำศัพท์','ชีวิตในไต้หวัน'].forEach((v,i)=>{quick[i].textContent=v;quick[i].dataset.query=['TOCFL','pronunciation','vocabulary','daily'][i];});
   const heads=document.querySelectorAll('.section-heading h2');heads[0].textContent=d.categories;heads[1].textContent=d.featured;
   document.querySelector('#directory .section-heading a').textContent=d.viewAll+' →';
   document.querySelector('.editorial-note').textContent=d.unverified;
@@ -83,7 +84,7 @@ function setLocale(code){
   // Rebuild the original static Chinese UI without accumulating partial translations.
   if(code!=='zh-TW'){document.querySelector('#notice').textContent='此語言的完整介面翻譯尚在建置中。';}
   else document.querySelector('#notice').textContent='目前為候選資源清單，仍待人工核驗。';
-  if(previousLocale==='th'){window.location.hash='';window.location.reload();return;}
+  if(previousLocale==='th'){window.location.reload();return;}
  }
  render();previousLocale=code;
 }
