@@ -88,4 +88,5 @@ function setLocale(code){
  render();previousLocale=code;
 }
 let previousLocale='zh-TW';
-document.querySelector('#lang').addEventListener('change',e=>setLocale(e.target.value));
+document.querySelector('#lang').addEventListener('change',e=>{try{sessionStorage.setItem('lr-chinese-locale',e.target.value);}catch{}setLocale(e.target.value);});
+try{const saved=sessionStorage.getItem('lr-chinese-locale');if(saved&&langs.some(([code])=>code===saved)){document.querySelector('#lang').value=saved;setLocale(saved);}}catch{}
