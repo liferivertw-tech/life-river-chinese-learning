@@ -35,9 +35,9 @@ function render(){
   const body=document.createElement('div');body.className='resource-body';
   const h=document.createElement('h3');h.textContent=r.title;
   const provider=document.createElement('p');provider.className='provider';provider.textContent=r.provider;
-  const desc=document.createElement('p');desc.textContent=r.summary;
+  const desc=document.createElement('p');const thaiDescriptions={'tocfl-official':'เว็บไซต์ทางการสำหรับข้อมูลการสอบวัดระดับภาษาจีน TOCFL ในไต้หวัน','naer-corpus':'แหล่งข้อมูลภาษาจีนและคลังข้อมูลสำหรับการศึกษาและค้นคว้า'};desc.textContent=currentLocale==='th'?(thaiDescriptions[r.id]??r.summary):r.summary;
   const tags=document.createElement('div');tags.className='resource-tags';
-  for(const value of [categories.find(x=>x[0]===r.category)?.[1]??r.category,r.level,'待核驗']){const tag=document.createElement('span');tag.textContent=value;tags.append(tag);}
+  for(const value of [currentLocale==='th'?thaiUI.categoryNames[r.category]:(categories.find(x=>x[0]===r.category)?.[1]??r.category),currentLocale==='th'?(thaiUI.levels[r.level]??r.level):r.level,currentLocale==='th'?thaiUI.candidate:'待核驗']){const tag=document.createElement('span');tag.textContent=value;tags.append(tag);}
   const a=document.createElement('a');a.href=r.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=currentLocale==='th'?thaiUI.link:'前往來源網站 ↗';
   body.append(h,provider,desc,tags,a);card.append(art,body);results.append(card);
  }
