@@ -90,7 +90,7 @@ function renderPath(){
 function renderFeatures(){
  const grid=qs('#featureGrid');grid.replaceChildren();
  const icons=['💰','🎚️','🌐','字','✓'];
- ui.features.forEach((label,i)=>{const card=document.createElement('article');card.className='feature-card';const icon=document.createElement('span');icon.textContent=icons[i];card.append(icon);const strong=document.createElement('strong');strong.textContent=label;card.append(strong);const p=document.createElement('p');p.textContent=ui.featureDescriptions&&ui.featureDescriptions[i]||ui.notice;card.append(p);grid.append(card);});
+ ui.features.forEach((label,i)=>{const card=document.createElement('article');card.className='feature-card';const icon=document.createElement('span');icon.textContent=icons[i];card.append(icon);const strong=document.createElement('strong');strong.textContent=label;card.append(strong);grid.append(card);});
 }
 function renderGap(){
  const summary=coverageSummary(catalog,[currentLocale])[0],box=qs('#gapStats');box.replaceChildren();
@@ -109,7 +109,7 @@ function setLocale(code){
  currentLocale=code;ui=Object.assign({},homepageMessages(code),homepageFlow(code));document.documentElement.lang=code;document.title='LIFE RIVER · '+ui.categories;
  ui.nav.forEach((v,i)=>{const a=qsAll('.site-nav a')[i];if(a)a.textContent=v;});
  qs('.language-picker b').textContent=ui.langLabel||ui.lang||'Language';
- qs('.hero h1').textContent=ui.hero[0];qs('.hero-en').textContent=ui.hero[0];qs('.hero-intro').textContent=ui.hero[1];qs('.hero-sub').textContent=ui.hero[2];qs('.hero-primary').textContent=ui.hero[3];qs('.hero-secondary').textContent=ui.hero[4];qs('.hero-proof-label').textContent=' '+ui.categories;
+ qs('.hero h1').textContent=ui.hero[0];qs('.hero-en').textContent='';qs('.hero-intro').textContent=ui.hero[1];qs('.hero-sub').textContent=ui.hero[2];qs('.hero-primary').textContent=ui.hero[3];qs('.hero-secondary').textContent=ui.hero[4];qs('.hero-proof-label').textContent=' '+ui.categories;
  qs('#goals h2').textContent=ui.goalTitle;qs('#goals .section-intro').textContent=ui.goalIntro;
  qs('#learningPath h2').textContent=ui.pathTitle;qs('.learning-path-intro').textContent=ui.pathIntro;
  qs('#resources h2').textContent=ui.resourceTitle;qs('.resource-section-intro').textContent=ui.resourceIntro;qs('.resource-more-link').textContent=ui.viewAll+' →';
