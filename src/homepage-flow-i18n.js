@@ -74,6 +74,10 @@ de:{features:['Kostenlos / kostenpflichtig','Niveau','Unterrichtssprache','Tradi
 };
 for(const [code,patch] of Object.entries(surfacePatches))Object.assign(flowI18n[code],patch);
 
+const summaryPendingByLocale={
+'zh-TW':'資源說明目前以中文提供。','en':'Resource description pending translation.','vi':'Mô tả tài nguyên đang chờ bản dịch.','id':'Deskripsi sumber sedang menunggu terjemahan.','th':'คำอธิบายทรัพยากรกำลังรอการแปล','fil':'Naghihintay ng salin ang paglalarawan ng resource.','ja':'リソースの説明は翻訳待ちです。','ko':'자료 설명은 번역을 기다리고 있습니다.','my':'အရင်းအမြစ်ဖော်ပြချက်သည် ဘာသာပြန်ရန် စောင့်ဆိုင်းနေပါသည်။','km':'ការពិពណ៌នាធនធានកំពុងរង់ចាំការបកប្រែ។','ms':'Penerangan sumber sedang menunggu terjemahan.','hi':'संसाधन का विवरण अनुवाद की प्रतीक्षा में है।','fr':'La description de la ressource est en attente de traduction.','es':'La descripción del recurso está pendiente de traducción.','de':'Die Ressourcenbeschreibung wartet auf eine Übersetzung.'};
+for(const locale of flowLocales)flowI18n[locale].summaryPending=summaryPendingByLocale[locale]||summaryPendingByLocale.en;
+
 const resourceMeta={costMap:{'免費':'Free','免費內容':'Free content','部分免費':'Partly free','付費':'Paid','付費內容':'Paid content','未核驗':'Not verified'},scriptMap:{'繁體中文':'Traditional Chinese','簡體中文':'Simplified Chinese','繁體與簡體選項':'Traditional & Simplified options','未核驗':'Not verified'}};
 const metaLocal={
 'vi':{costMap:{'免費':'Miễn phí','免費內容':'Nội dung miễn phí','部分免費':'Miễn phí một phần','付費':'Trả phí','付費內容':'Nội dung trả phí','未核驗':'Chưa xác minh'},scriptMap:{'繁體中文':'Phồn thể','簡體中文':'Giản thể','繁體與簡體選項':'Phồn thể & Giản thể','未核驗':'Chưa xác minh'}},

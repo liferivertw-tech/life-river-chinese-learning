@@ -55,7 +55,9 @@ function renderResourceCard(r,kind){
  const body=document.createElement('div');body.className='resource-card-body';
  const h=document.createElement('h3');h.textContent=r.title;body.append(h);
  const provider=document.createElement('p');provider.className='provider';provider.textContent=r.provider;body.append(provider);
- const summary=document.createElement('p');summary.textContent=r.summary;body.append(summary);
+ const summary=document.createElement('p');summary.className='resource-summary';
+ const localizedSummary=r.summaryByLocale?.[currentLocale]||(currentLocale==='zh-TW'?r.summary:null);
+ summary.textContent=localizedSummary||ui.summaryPending;summary.setAttribute('lang',localizedSummary?(r.summaryLanguageByLocale?.[currentLocale]||currentLocale):currentLocale);body.append(summary);
  const tags=document.createElement('div');tags.className='resource-tags';
  [[localCategory(r.category),'tag-category'],[localLevel(r.level),'tag-level'],[localCost(r.cost),'tag-cost'],[localScript(r.script),'tag-script']].forEach(([v,c])=>{const s=document.createElement('span');s.className=c;s.textContent=v;tags.append(s);});
  const status=document.createElement('span');status.className='verification';status.textContent=r.checkedAt?'✓ '+r.checkedAt:ui.candidate;tags.append(status);
