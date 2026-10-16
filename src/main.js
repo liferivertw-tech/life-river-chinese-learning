@@ -31,7 +31,7 @@ function render(){
  const ordered=[...grouped.primary,...grouped.fallback,...grouped.other];
  for(const r of ordered){
   const card=document.createElement('article');card.className='resource-card';
-  if(currentLocale==='th'){const groupLabel=document.createElement('p');groupLabel.className='resource-language-label';groupLabel.textContent=grouped.primary.includes(r)?thaiUI.native:grouped.fallback.includes(r)?thaiUI.english:thaiUI.other;card.append(groupLabel);}
+  if(['th','vi','id'].includes(currentLocale)){const groupLabel=document.createElement('p');groupLabel.className='resource-language-label';const labels={th:[thaiUI.native,thaiUI.english,thaiUI.other],vi:['Tài liệu tiếng Việt','Tài liệu tiếng Anh bổ sung','Tài liệu ngôn ngữ khác'],id:['Materi berbahasa Indonesia','Materi tambahan bahasa Inggris','Materi bahasa lain']};const group=grouped.primary.includes(r)?0:grouped.fallback.includes(r)?1:2;groupLabel.textContent=labels[currentLocale][group];card.append(groupLabel);}
   const art=document.createElement('div');art.className='resource-art';art.textContent=r.category==='tocfl'?'🎓':'📚';
   const body=document.createElement('div');body.className='resource-body';
   const h=document.createElement('h3');h.textContent=r.title;
@@ -43,8 +43,8 @@ function render(){
   body.append(h,provider,desc,tags,a);card.append(art,body);results.append(card);
  }
  document.querySelector('#count').textContent=currentLocale==='th'?thaiUI.count(rows.length):'找到 '+rows.length+' 筆候選資源';
- if(currentLocale==='th'){
-  const info=document.createElement('p');info.className='language-resource-notice';info.textContent=thaiUI.native+': '+grouped.primary.length+' · '+thaiUI.english+': '+grouped.fallback.length+' · '+thaiUI.other+': '+grouped.other.length+'. '+(grouped.primary.length?'':thaiUI.noNative);results.prepend(info);
+ if(['th','vi','id'].includes(currentLocale)){
+  const info=document.createElement('p');info.className='language-resource-notice';info.textContent=currentLocale==='th'?thaiUI.native+': '+grouped.primary.length+' · '+thaiUI.english+': '+grouped.fallback.length+' · '+thaiUI.other+': '+grouped.other.length+'. '+(grouped.primary.length?'':thaiUI.noNative):currentLocale==='vi'?'Tài liệu tiếng Việt: '+grouped.primary.length+' · Tiếng Anh bổ sung: '+grouped.fallback.length+' · Khác: '+grouped.other.length:'Materi bahasa Indonesia: '+grouped.primary.length+' · Bahasa Inggris: '+grouped.fallback.length+' · Lainnya: '+grouped.other.length;results.prepend(info);
  }
  if(!rows.length){const empty=document.createElement('p');empty.textContent=currentLocale==='th'?thaiUI.empty:'目前沒有符合條件的資源，後續將持續擴充。';results.append(empty);}
 }
