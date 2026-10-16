@@ -1,9 +1,11 @@
 import './style.css';
 import './learning-path.css';
+import './coverage-matrix.css';
 import {catalog,categories} from './catalog.js';
 import {groupResources,matchResource} from './resource-ranking.js';
 import {homepageMessages} from './homepage-i18n.js';
 import {learningPath,resourcesForNode} from './learning-path.js';
+import {buildCoverageMatrix,coverageSummary} from './coverage-matrix.js';
 import {renderShell} from './ui-shell.js';
 
 const langs=[['zh-TW','繁體中文'],['en','English'],['vi','Tiếng Việt'],['id','Bahasa Indonesia'],['th','ไทย'],['fil','Filipino'],['ja','日本語'],['ko','한국어'],['my','မြန်မာ'],['km','ភាសាខ្មែរ'],['ms','Bahasa Melayu'],['hi','हिन्दी'],['fr','Français'],['es','Español'],['de','Deutsch']];
@@ -23,6 +25,7 @@ const level=qs('#levelFilter');
 const results=qs('#resourceResults');
 const pathGrid=qs('#pathGrid');
 const categoryMap=Object.fromEntries(categories);
+const languageNames=Object.fromEntries(langs);
 langs.forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;qs('#lang').append(o)});
 
 function localizedCategory(id){return ui.categoryNames?.[id]??categoryMap[id]??id}
@@ -62,13 +65,29 @@ function renderLearningPath(){
  });
 }
 
+function renderCoverage(){
+ const head=qs('#coverageHead');const body=qs('#coverageBody');const summaryBox=qs('#coverageSummary');
+ const matrix=buildCoverageMatrix(catalog,langs.map(([code])=>code));
+ const summary=coverageSummary(catalog,langs.map(([code])=>code));
+ head.innerHTML=`<tr><th>語言</th>${learningPath.map(n=>`<th title="${n.title}">${n.order}. ${n.title}</th>`).join('')}</tr>`;
+ body.replaceChildren();
+ matrix.forEach(row=>{
+  const tr=document.createElement('tr');
+  const name=document.createElement('td');name.textContent=languageNames[row.locale]??row.locale;tr.append(name);
+  row.cells.forEach(cell=>{const td=document.createElement('td');td.className=`coverage-cell ${cell.status}`;td.title=`母語 ${cell.native} · 英文 ${cell.english} · 其他 ${cell.other}`;td.textContent=cell.status==='native'?`母 ${cell.native}`:cell.status==='english'?`英 ${cell.english}`:'缺';tr.append(td)});
+  body.append(tr);
+ });
+ const nativeCells=summary.reduce((n,r)=>n+r.native,0);const englishCells=summary.reduce((n,r)=>n+r.english,0);const gaps=summary.reduce((n,r)=>n+r.gaps,0);
+ summaryBox.innerHTML=`<article><strong>${nativeCells}</strong><span>母語已覆蓋節點</span></article><article><strong>${englishCells}</strong><span>只有英文補充節點</span></article><article><strong>${gaps}</strong><span>優先蒐集缺口</span></article>`;
+}
+
 function setLocale(code){
  currentLocale=code;ui=homepageMessages(code);document.documentElement.lang=code;
  const nav=qsAll('.site-nav a');[ui.navHome,ui.navCategories,ui.navFeatured,ui.navAbout].forEach((v,i)=>{if(nav[i])nav[i].textContent=v;});
  qs('.language-picker span').textContent=ui.langLabel;qs('.hero h1').textContent=ui.heroTitle;qs('.hero-en').textContent=ui.heroEnglish??'';qs('.hero-intro').textContent=ui.heroIntro;qs('.hero-sub').textContent=ui.heroSub;
  query.placeholder=ui.searchPlaceholder;qs('.search-button').textContent=ui.searchButton;qs('.filter-link').textContent=ui.advanced;qs('.quick-links span').textContent='🔥 '+ui.popular;
  qsAll('.quick-links button').forEach((b,i)=>{b.textContent=ui.quick[i]??b.textContent;});
- const heads=qsAll('.section-heading h2');if(heads[0])heads[0].textContent=ui.categories;if(heads[1])heads[1].textContent=pathHeadings[code]??pathHeadings.en;if(heads[2])heads[2].textContent=ui.featured;
+ const heads=qsAll('.section-heading h2');if(heads[0])heads[0].textContent=ui.categories;if(heads[1])heads[1].textContent=pathHeadings[code]??pathHeadings.en;if(heads[3])heads[3].textContent=ui.featured;
  const intro=qs('.learning-path-intro');if(intro)intro.textContent=pathIntros[code]??pathIntros.en;
  const view=qs('#directory .section-heading a');if(view)view.textContent=ui.viewAll+' →';
  qsAll('.category-tile').forEach(el=>{el.querySelector('.tile-title').textContent=localizedCategory(el.dataset.category);});
@@ -76,7 +95,7 @@ function setLocale(code){
  category.options[0].textContent=ui.allCategories;Array.from(category.options).slice(1).forEach(o=>o.textContent=localizedCategory(o.value));
  level.options[0].textContent=ui.allLevels;Array.from(level.options).slice(1).forEach(o=>o.textContent=ui.levels?.[o.value]??o.value);
  qs('#clearFilters').textContent=ui.clear;const about=qs('.about');if(about){const h=about.querySelector('h2'),p=about.querySelector('p');if(h)h.textContent=ui.aboutTitle;if(p)p.textContent=ui.aboutBody;}const notice=qs('#notice');if(notice)notice.textContent=ui.notice;
- renderLearningPath();renderResources();
+ renderLearningPath();renderResources();renderCoverage();
 }
 
 qs('#searchForm').addEventListener('submit',e=>{e.preventDefault();renderResources();qs('#resources').scrollIntoView({behavior:'smooth'});});
