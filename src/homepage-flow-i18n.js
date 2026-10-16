@@ -74,6 +74,24 @@ de:{features:['Kostenlos / kostenpflichtig','Niveau','Unterrichtssprache','Tradi
 };
 for(const [code,patch] of Object.entries(surfacePatches))Object.assign(flowI18n[code],patch);
 
+const goalStartByLocale={
+'zh-TW':{title:'你的起點',body:(g,p)=>'依照「'+g+'」，建議先從「'+p+'」開始。',action:'查看起點'},
+'en':{title:'Your starting point',body:(g,p)=>'For “'+g+'”, we recommend starting with “'+p+'”.',action:'View starting point'},
+'vi':{title:'Điểm bắt đầu của bạn',body:(g,p)=>'Với mục tiêu “'+g+'”, bạn nên bắt đầu từ “'+p+'”.',action:'Xem điểm bắt đầu'},
+'id':{title:'Titik awal Anda',body:(g,p)=>'Untuk tujuan “'+g+'”, kami menyarankan mulai dari “'+p+'”.',action:'Lihat titik awal'},
+'th':{title:'จุดเริ่มต้นของคุณ',body:(g,p)=>'สำหรับเป้าหมาย “'+g+'” แนะนำให้เริ่มจาก “'+p+'”',action:'ดูจุดเริ่มต้น'},
+'fil':{title:'Iyong panimulang hakbang',body:(g,p)=>'Para sa layuning “'+g+'”, inirerekomendang magsimula sa “'+p+'”.',action:'Tingnan ang panimulang hakbang'},
+'ja':{title:'あなたのスタート地点',body:(g,p)=>'「'+g+'」が目的なら、「'+p+'」から始めるのがおすすめです。',action:'スタート地点を見る'},
+'ko':{title:'추천 시작점',body:(g,p)=>'“'+g+'” 목표라면 “'+p+'”부터 시작하는 것을 추천합니다.',action:'시작점 보기'},
+'my':{title:'သင့်အစပြုရာ',body:(g,p)=>'“'+g+'” ရည်မှန်းချက်အတွက် “'+p+'” မှ စတင်ရန် အကြံပြုပါသည်။',action:'အစပြုရာကိုကြည့်ရန်'},
+'km':{title:'ចំណុចចាប់ផ្តើមរបស់អ្នក',body:(g,p)=>'សម្រាប់គោលដៅ “'+g+'” យើងសូមណែនាំឱ្យចាប់ផ្តើមពី “'+p+'”។',action:'មើលចំណុចចាប់ផ្តើម'},
+'ms':{title:'Titik mula anda',body:(g,p)=>'Untuk matlamat “'+g+'”, kami cadangkan bermula dengan “'+p+'”.',action:'Lihat titik mula'},
+'hi':{title:'आपकी शुरुआत',body:(g,p)=>'“'+g+'” लक्ष्य के लिए “'+p+'” से शुरुआत करने की सलाह है।',action:'शुरुआती चरण देखें'},
+'fr':{title:'Votre point de départ',body:(g,p)=>'Pour l’objectif « '+g+' », nous vous conseillons de commencer par « '+p+' ».',action:'Voir le point de départ'},
+'es':{title:'Tu punto de partida',body:(g,p)=>'Para el objetivo « '+g+' », recomendamos empezar por « '+p+' ».',action:'Ver el punto de partida'},
+'de':{title:'Dein Startpunkt',body:(g,p)=>'Für das Ziel „'+g+'“ empfehlen wir, mit „'+p+'“ zu beginnen.',action:'Startpunkt ansehen'}};
+for(const locale of flowLocales){const s=goalStartByLocale[locale]||goalStartByLocale.en;flowI18n[locale].goalStartTitle=s.title;flowI18n[locale].goalStart=s.body;flowI18n[locale].goalStartAction=s.action;}
+
 const summaryPendingByLocale={
 'zh-TW':'資源說明目前以中文提供。','en':'Resource description pending translation.','vi':'Mô tả tài nguyên đang chờ bản dịch.','id':'Deskripsi sumber sedang menunggu terjemahan.','th':'คำอธิบายทรัพยากรกำลังรอการแปล','fil':'Naghihintay ng salin ang paglalarawan ng resource.','ja':'リソースの説明は翻訳待ちです。','ko':'자료 설명은 번역을 기다리고 있습니다.','my':'အရင်းအမြစ်ဖော်ပြချက်သည် ဘာသာပြန်ရန် စောင့်ဆိုင်းနေပါသည်။','km':'ការពិពណ៌នាធនធានកំពុងរង់ចាំការបកប្រែ។','ms':'Penerangan sumber sedang menunggu terjemahan.','hi':'संसाधन का विवरण अनुवाद की प्रतीक्षा में है।','fr':'La description de la ressource est en attente de traduction.','es':'La descripción del recurso está pendiente de traducción.','de':'Die Ressourcenbeschreibung wartet auf eine Übersetzung.'};
 for(const locale of flowLocales)flowI18n[locale].summaryPending=summaryPendingByLocale[locale]||summaryPendingByLocale.en;

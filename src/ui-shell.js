@@ -15,7 +15,7 @@ export function renderShell(root,categories){
  '<div class="hero-actions"><a href="#goals" class="primary-cta hero-primary"></a><a href="#learningPath" class="secondary-cta hero-secondary"></a></div>',
  '<div class="hero-proof"><span>15</span><span class="hero-proof-label"></span></div>',
  '</div></section>',
- '<section id="goals" class="goals-section"><div class="section-heading centered"><p class="section-kicker">01</p><h2></h2><p class="section-intro"></p></div><div id="goalGrid" class="goal-grid"></div></section>',
+ '<section id="goals" class="goals-section"><div class="section-heading centered"><p class="section-kicker">01</p><h2></h2><p class="section-intro"></p></div><div id="goalGrid" class="goal-grid"></div><aside id="goalStartPanel" class="goal-start-panel" hidden><div><p class="goal-start-title"></p><p class="goal-start-body"></p></div><button type="button" class="goal-start-action secondary-cta"></button></aside></section>',
  '<section id="learningPath" class="learning-path"><div class="section-heading"><div><p class="section-kicker">02</p><h2></h2><p class="learning-path-intro"></p></div></div><div id="pathGrid" class="path-grid"></div></section>',
  '<section id="resources" class="resource-section"><div class="section-heading"><div><p class="section-kicker">03</p><h2></h2><p class="resource-section-intro"></p></div><a href="#allResources" class="section-link resource-more-link"></a></div><div id="resourceFeature" class="resource-feature-grid"></div></section>',
  '<section id="directory" class="directory-section"><div class="section-heading"><div><p class="section-kicker">04</p><h2></h2></div><a href="#allResources" class="section-link"></a></div><div class="category-grid">'+tiles+'</div></section>',

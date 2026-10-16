@@ -89,6 +89,17 @@ function renderGoals(){
   b.addEventListener('click',()=>{selectedGoal=id;renderGoals();renderPath();renderFeatured();const first=nodesForGoal(id)[0];if(first)qs('#path-'+first.id).scrollIntoView({behavior:'smooth',block:'center'});});
   grid.append(b);
  });
+ const panel=qs('#goalStartPanel');
+ if(panel){
+  panel.hidden=!selectedGoal;
+  if(selectedGoal){
+   const idx=goalEntries.findIndex(x=>x[0]===selectedGoal), node=nodesForGoal(selectedGoal)[0];
+   panel.querySelector('.goal-start-title').textContent=ui.goalStartTitle||'';
+   panel.querySelector('.goal-start-body').textContent=(ui.goalStart||((g,p)=>g+' → '+p))(ui.goals[idx],node?(ui.pathTitles?.[node.order-1]||node.title):'');
+   panel.querySelector('.goal-start-action').textContent=ui.goalStartAction||ui.pathView;
+   panel.querySelector('.goal-start-action').onclick=()=>node&&qs('#path-'+node.id)?.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+ }
 }
 function renderPath(){
  const grid=qs('#pathGrid');grid.replaceChildren();
