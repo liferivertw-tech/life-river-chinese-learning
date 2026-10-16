@@ -85,7 +85,7 @@ async function checkLocale(page,locale,viewportName,viewport){
   assert(actual.goalsTitle===flow.goalTitle,`${locale}/${viewportName}: goals title mismatch`);
   assert(actual.pathTitle===flow.pathTitle,`${locale}/${viewportName}: path title mismatch`);
   assert(actual.resourceTitle===flow.resourceTitle,`${locale}/${viewportName}: resource title mismatch`);
-  assert(actual.directoryTitle===flow.categories,`${locale}/${viewportName}: directory title mismatch`);
+  assert(actual.directoryTitle===expected.categories,`${locale}/${viewportName}: directory title mismatch`);
   assert(actual.featureTitle===flow.featuresTitle,`${locale}/${viewportName}: feature title mismatch`);
   assert(actual.gapTitle===flow.gapTitle,`${locale}/${viewportName}: gap title mismatch`);
   assert(actual.allResourcesTitle===flow.resourceTitle,`${locale}/${viewportName}: all-resources title mismatch`);
