@@ -17,12 +17,12 @@ const RULES={
 };
 
 function stripMarkup(html=''){
- return html.replace(/<script[\\s\\S]*?<\\/script>/gi,' ')
-  .replace(/<style[\\s\\S]*?<\\/style>/gi,' ')
+ return html.replace(/<script[\s\S]*?<\/script>/gi,' ')
+  .replace(/<style[\s\S]*?<\/style>/gi,' ')
   .replace(/<[^>]+>/g,' ')
   .replace(/&nbsp;/gi,' ')
   .replace(/&amp;/gi,'&')
-  .replace(/\\s+/g,' ')
+  .replace(/\s+/g,' ')
   .trim();
 }
 
