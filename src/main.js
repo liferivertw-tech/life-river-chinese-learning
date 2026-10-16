@@ -119,9 +119,9 @@ function renderResources(){
  const q=query.value.trim().toLocaleLowerCase();
  const filtered=catalog.filter(r=>(!category.value||r.category===category.value)&&(!level.value||r.level===level.value)&&matchResource(r,q,localCategory(r.category)));
  const g=resourceGroup(filtered);results.replaceChildren();
- const info=document.createElement('p');info.className='language-resource-notice';info.textContent=ui.native+': '+g.primary.length+' · '+ui.english+': '+g.fallback.length+' · '+ui.other+': '+g.other.length;results.append(info);
+ const info=document.createElement('p');info.className='language-resource-notice';info.textContent=ui.native+': '+g.primary.length+' · '+ui.english+': '+g.fallback.length;results.append(info);
  if(!filtered.length){const e=document.createElement('p');e.className='empty';e.textContent=ui.empty;results.append(e);return;}
- [...g.primary,...g.fallback,...g.other].forEach(r=>results.append(renderResourceCard(r,g.primary.includes(r)?'native':g.fallback.includes(r)?'english':'other')));
+ [...g.primary,...g.fallback].forEach(r=>results.append(renderResourceCard(r,g.primary.includes(r)?'native':'english')));
 }
 function setLocale(code){
  currentLocale=code;ui=Object.assign({},homepageMessages(code),homepageFlow(code));document.documentElement.lang=code;document.title='LIFE RIVER · '+ui.categories;
