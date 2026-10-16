@@ -4,3 +4,10 @@
 .language-picker select{min-height:40px}
 .resource-card a{display:inline-flex;min-height:32px;align-items:center}
 @media(max-width:720px){.site-header{min-height:62px}.goal-card,.path-resource-button,.category-tile,.quick-links button,.clear-button{min-height:44px}.filters select{min-height:44px}.language-picker select{min-height:42px}.hero-actions a{min-height:46px}.resource-card a{min-height:40px}}
+
+@media(max-width:720px){
+.section-heading{flex-wrap:wrap}
+.section-heading>div{min-width:0;flex:1 1 100%}
+.section-heading>.section-link{margin-left:0}
+.section-heading h2,.section-intro,.learning-path-intro,.resource-section-intro{overflow-wrap:anywhere}
+}
