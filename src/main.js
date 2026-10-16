@@ -37,6 +37,7 @@ const query=qs('#searchInput'),category=qs('#categoryFilter'),level=qs('#levelFi
 function localCategory(id){return ui.categoryNames&&ui.categoryNames[id]||id}
 function localCost(value){return ui.costMap&&ui.costMap[value]||value}
 function localLevel(value){return ui.levels&&ui.levels[value]||value}
+function localScript(value){return ui.scriptMap&&ui.scriptMap[value]||value}
 function resourceGroup(rows){return groupResources(rows,currentLocale)}
 function nodesForGoal(goal){const ids=new Set(goalMap[goal]||[]);return learningPath.filter(n=>ids.has(n.id))}
 function featuredResources(){
@@ -56,7 +57,7 @@ function renderResourceCard(r,kind){
  const provider=document.createElement('p');provider.className='provider';provider.textContent=r.provider;body.append(provider);
  const summary=document.createElement('p');summary.textContent=r.summary;body.append(summary);
  const tags=document.createElement('div');tags.className='resource-tags';
- [[localCategory(r.category),'tag-category'],[localLevel(r.level),'tag-level'],[localCost(r.cost),'tag-cost'],[r.script,'tag-script']].forEach(([v,c])=>{const s=document.createElement('span');s.className=c;s.textContent=v;tags.append(s);});
+ [[localCategory(r.category),'tag-category'],[localLevel(r.level),'tag-level'],[localCost(r.cost),'tag-cost'],[localScript(r.script),'tag-script']].forEach(([v,c])=>{const s=document.createElement('span');s.className=c;s.textContent=v;tags.append(s);});
  const status=document.createElement('span');status.className='verification';status.textContent=r.checkedAt?'✓ '+r.checkedAt:ui.candidate;tags.append(status);
  body.append(tags);
  const a=document.createElement('a');a.href=r.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=ui.link;body.append(a);
