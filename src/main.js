@@ -60,6 +60,11 @@ function featuredResources(){
  const g=resourceGroup(rows),primary=g.primary.slice(0,6),fallback=g.fallback.slice(0,Math.max(0,6-primary.length));
  return {primary,fallback,level:selectedLevel};
 }
+function trustTier(r){
+ if(r.status==='verified')return {key:'A',label:ui.trustA};
+ if(r.checkedAt)return {key:'B',label:ui.trustB};
+ return {key:'C',label:ui.trustC};
+}
 function recommendationReasons(r,kind){
  const reasons=[];
  if(kind==='native')reasons.push(ui.reasonNative);
@@ -82,10 +87,8 @@ function renderResourceCard(r,kind){
  summary.textContent=localizedSummary||ui.summaryPending;summary.setAttribute('lang',localizedSummary?(r.summaryLanguageByLocale?.[currentLocale]||currentLocale):currentLocale);body.append(summary);
  const tags=document.createElement('div');tags.className='resource-tags';
  [[localCategory(r.category),'tag-category'],[localLevel(r.level),'tag-level'],[localCost(r.cost),'tag-cost'],[localScript(r.script),'tag-script']].forEach(([v,c])=>{const s=document.createElement('span');s.className=c;s.textContent=v;tags.append(s);});
- const status=document.createElement('span');status.className='verification '+(r.status==='verified'?'verified':'pending');
- if(r.status==='verified')status.textContent='✓ '+ui.verified;
- else if(r.checkedAt)status.textContent='✓ '+ui.checked+' · '+r.checkedAt;
- else status.textContent='! '+ui.candidate;
+ const trust=trustTier(r); const status=document.createElement('span');status.className='verification trust-'+trust.key.toLowerCase(); status.title=ui.trustTooltip;
+ status.textContent=trust.key+' · '+trust.label+(r.checkedAt&&trust.key!=='C'?' · '+r.checkedAt:'');
  tags.append(status);
  body.append(tags);
  const reasons=recommendationReasons(r,kind);
@@ -186,7 +189,7 @@ function setLocale(code){
  qs('.hero h1').textContent=ui.hero[0];qs('.hero-en').textContent='';qs('.hero-intro').textContent=ui.hero[1];qs('.hero-sub').textContent=ui.hero[2];qs('.hero-primary').textContent=ui.hero[3];qs('.hero-secondary').textContent=ui.hero[4];qs('.hero-proof-label').textContent=' '+ui.categories;
  qs('#goals h2').textContent=ui.goalTitle;qs('#goals .section-intro').textContent=ui.goalIntro;
  qs('#learningPath h2').textContent=ui.pathTitle;qs('.learning-path-intro').textContent=ui.pathIntro;
- qs('#resources h2').textContent=ui.resourceTitle;qs('.resource-section-intro').textContent=ui.resourceIntro;qs('.resource-more-link').textContent=ui.viewAll+' →';qs('.legend-verified-label').textContent=ui.verifiedLegend;qs('.legend-pending-label').textContent=ui.pendingLegend;
+ qs('#resources h2').textContent=ui.resourceTitle;qs('.resource-section-intro').textContent=ui.resourceIntro;qs('.resource-more-link').textContent=ui.viewAll+' →';qs('.trust-heading').textContent=ui.trustHeading;qs('.legend-verified-label').textContent=ui.trustALegend;qs('.legend-pending-label').textContent=ui.trustBCLabel;
  qs('#directory h2').textContent=ui.categories;qs('#directory .section-link').textContent=ui.viewAll+' →';
  qsAll('.category-tile').forEach(el=>el.querySelector('.tile-title').textContent=localCategory(el.dataset.category));
  qs('#features h2').textContent=ui.featuresTitle;qs('#gap h2').textContent=ui.gapTitle;qs('#gapIntro').textContent=ui.gapIntro;qs('#gapAction').textContent=ui.gapAction;
