@@ -55,11 +55,10 @@ async function checkLocale(page,locale,viewportName,viewport){
   await page.setViewportSize(viewport);
   await page.goto(BASE_URL,{waitUntil:'networkidle'});
   await page.selectOption('#lang',locale);
-  await page.waitForFunction(expected => document.querySelector('.hero h1')?.textContent?.trim() === expected, flowHero(locale));
+  await page.waitForTimeout(250);
 
   const expected=homepageMessages(locale);
   const flow=homepageFlow(locale);
-  function flowHero(code){ return homepageFlow(code).hero[0]; }
   const actual=await page.evaluate(()=>({
     lang:document.documentElement.lang,
     title:document.title,
