@@ -50,3 +50,11 @@ es:[['Reconocer los cuatro tonos y el tono neutro','Relacionar Pinyin con sonido
 de:[['Vier Töne und den neutralen Ton erkennen','Pinyin mit echten Lauten verbinden','Häufige Silben nachsprechen'],['Grundstriche und Strichfolge lernen','Radikale zum Merken von Zeichenformen nutzen','Traditionelles Chinesisch und Zhuyin verstehen'],['Häufigen Alltagswortschatz aufbauen','Grundlegende Wortstellung und Satzmuster lernen','Mit kurzen Sätzen ausdrücken'],['Hörunterscheidung und Sprechreaktion verbessern','Kurze praktische Texte lesen','Kurze Nachrichten schreiben'],['Verkehr, Einkäufe und Gesundheitssituationen bewältigen','Übliche Ausdrücke und Schilder in Taiwan verstehen','Chinesisch im echten Leben verwenden'],['Arbeits- und Bildungssprache verstehen','Interviews, Anmeldung und Verwaltung vorbereiten','Zum professionellen Chinesisch weitergehen'],['Mit traditionellem Chinesisch in Taiwan vertraut werden','Zhuyin zum Nachschlagen und für die Aussprache nutzen','Übliche Formen in Taiwan erkennen'],['TOCFL-Stufen und Fragetypen verstehen','Vorbereitungsmaterial nach Niveau finden','Den Lernpfad anhand der Ergebnisse anpassen']]
 };
 for(const [code,goals] of Object.entries(pathGoalPatches))flowI18n[code].pathGoals=goals;
+
+const pathTitlePatches={
+th:['การออกเสียง วรรณยุกต์ และ Pinyin','อักษรจีน ขีด และส่วนประกอบ','คำศัพท์และรูปประโยคพื้นฐาน','ฟัง พูด อ่าน และเขียน','ภาษาจีนในชีวิตประจำวันไต้หวัน','งานและการศึกษา','ภาษาจีนตัวเต็มและ Zhuyin','TOCFL'],
+fil:['Pagbigkas, tono at Pinyin','Chinese characters, stroke at radicals','Pangunahing bokabularyo at sentence patterns','Pakikinig, pagsasalita, pagbasa at pagsulat','Pang-araw-araw na Chinese sa Taiwan','Trabaho at pag-aaral','Traditional Chinese at Zhuyin','TOCFL'],
+ja:['発音・声調・ピンイン','漢字・筆画・部首','基礎語彙と文型','聞く・話す・読む・書く','台湾の日常中国語','仕事と留学','繁体字中国語と注音','TOCFL'],
+ko:['발음·성조·병음','한자·획·부수','기초 어휘와 문형','듣기·말하기·읽기·쓰기','대만 생활 중국어','직장과 유학','번체 중국어와 주음','TOCFL']
+};
+for(const [code,titles] of Object.entries(pathTitlePatches))flowI18n[code].pathTitles=titles;
