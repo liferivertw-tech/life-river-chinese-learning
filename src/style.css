@@ -29,3 +29,9 @@
 .start-guide-steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0;padding:0}.start-guide-steps li{display:flex;gap:10px;align-items:flex-start;padding:14px;border:1px solid #d9e6ef;border-radius:16px;background:#fff}.start-guide-steps li>span{display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:50%;background:#176bc4;color:#fff;font-weight:900;font-size:12px}.start-step-title{display:block;color:#204b70;font-size:13px}.start-step-body{margin:4px 0 0;color:#718494;font-size:11px;line-height:1.6}
 @media(max-width:900px){.start-guide{grid-template-columns:1fr}.start-guide-heading{text-align:center}.start-guide-steps{grid-template-columns:1fr}}
 @media(max-width:720px){.start-guide{padding:24px 18px}.start-guide-title{font-size:21px}.start-guide-steps{gap:9px}.start-guide-steps li{padding:12px}}
+
+.goal-level-control{display:flex;align-items:center;gap:8px;margin-top:10px}
+.goal-level-label{font-size:11px;font-weight:800;color:#617588}
+.goal-level-select{border:1px solid #d5e2ed;border-radius:10px;background:#fff;color:#24577f;padding:7px 10px;min-width:130px}
+.resource-recommendation-note{margin:-10px 0 18px;color:#5f7890;font-size:12px}
+@media(max-width:720px){.goal-level-control{align-items:stretch;flex-direction:column}.goal-level-select{width:100%;min-height:42px}.resource-recommendation-note{margin-top:-4px}}

@@ -1,0 +1,16 @@
+export const recommendationI18n={
+'zh-TW':{goalLevelLabel:'你的程度',recommendationNote:l=>'已依「'+l+'」程度＋學習目的＋介面語言，優先排列推薦資源。'},
+'en':{goalLevelLabel:'Your level',recommendationNote:l=>'Resources are ranked by your '+l.toLowerCase()+' level, learning goal, and interface language.'},
+'vi':{goalLevelLabel:'Trình độ của bạn',recommendationNote:l=>'Tài liệu được ưu tiên theo trình độ '+l+', mục tiêu và ngôn ngữ giao diện của bạn.'},
+'id':{goalLevelLabel:'Tingkat Anda',recommendationNote:l=>'Sumber diprioritaskan berdasarkan tingkat '+l+', tujuan belajar, dan bahasa antarmuka.'},
+'th':{goalLevelLabel:'ระดับของคุณ',recommendationNote:l=>'จัดลำดับแหล่งเรียนรู้ตามระดับ '+l+' เป้าหมายการเรียน และภาษาของอินเทอร์เฟซ'},
+'fil':{goalLevelLabel:'Antas mo',recommendationNote:l=>'Inuuna ang resources ayon sa antas na '+l+', layunin, at wika ng interface.'},
+'ja':{goalLevelLabel:'あなたのレベル',recommendationNote:l=>'「'+l+'」のレベル、学習目的、表示言語に合わせてリソースを優先表示します。'},
+'ko':{goalLevelLabel:'나의 수준',recommendationNote:l=>'“'+l+'” 수준과 학습 목적, 인터페이스 언어를 기준으로 자료를 우선 정렬합니다.'},
+'my':{goalLevelLabel:'သင့်အဆင့်',recommendationNote:l=>'“'+l+'” အဆင့်၊ လေ့လာရေးရည်မှန်းချက်နှင့် အင်တာဖေ့စ်ဘာသာစကားအလိုက် အရင်းအမြစ်များကို ဦးစားပေးပြသပါသည်။'},
+'km':{goalLevelLabel:'កម្រិតរបស់អ្នក',recommendationNote:l=>'ធនធានត្រូវបានរៀបចំតាមកម្រិត '+l+' គោលដៅសិក្សា និងភាសាចំណុចប្រទាក់។'},
+'ms':{goalLevelLabel:'Tahap anda',recommendationNote:l=>'Sumber diutamakan berdasarkan tahap '+l+', matlamat pembelajaran dan bahasa antara muka.'},
+'hi':{goalLevelLabel:'आपका स्तर',recommendationNote:l=>'संसाधनों को '+l+' स्तर, आपके लक्ष्य और इंटरफ़ेस भाषा के आधार पर प्राथमिकता दी जाती है।'},
+'fr':{goalLevelLabel:'Votre niveau',recommendationNote:l=>'Les ressources sont classées selon votre niveau '+l+', votre objectif et la langue de l’interface.'},
+'es':{goalLevelLabel:'Tu nivel',recommendationNote:l=>'Los recursos se priorizan según tu nivel '+l+', tu objetivo y el idioma de la interfaz.'},
+'de':{goalLevelLabel:'Dein Niveau',recommendationNote:l=>'Ressourcen werden nach deinem Niveau '+l+', deinem Lernziel und der Oberflächensprache priorisiert.'}};

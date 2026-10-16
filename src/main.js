@@ -7,12 +7,13 @@ import {learningPath} from './learning-path.js';
 import {coverageSummary} from './coverage-matrix.js';
 import {renderShell} from './ui-shell.js';
 import {onboardingI18n} from './onboarding-i18n.js';
+import {recommendationI18n} from './recommendation-i18n.js';
 
 const langs=[['zh-TW','繁體中文'],['en','English'],['vi','Tiếng Việt'],['id','Bahasa Indonesia'],['th','ไทย'],['fil','Filipino'],['ja','日本語'],['ko','한국어'],['my','မြန်မာ'],['km','ភាសាខ្មែរ'],['ms','Bahasa Melayu'],['hi','हिन्दी'],['fr','Français'],['es','Español'],['de','Deutsch']];
 const goalMap={zero:['sound'],daily:['taiwan'],speaking:['skills'],literacy:['characters','reading'],taiwan:['taiwan'],work:['work-study'],traditional:['traditional'],tocfl:['tocfl']};
 const goalEntries=[['zero','🧭'],['daily','🛍️'],['speaking','🎧'],['literacy','📚'],['taiwan','🏮'],['work','💼'],['traditional','ㄅ'],['tocfl','🎓']];
 const qs=s=>document.querySelector(s),qsAll=s=>document.querySelectorAll(s);
-let currentLocale='zh-TW',ui={},selectedGoal=null;
+let currentLocale='zh-TW',ui={},selectedGoal=null,selectedLevel='入門';
 const brandLabels={
  'zh-TW':['LIFE RIVER · 中文學習資源網','生命河｜中文學習資源網'],
  en:['LIFE RIVER · CHINESE LEARNING HUB','LIFE RIVER · Chinese Learning Hub'],
@@ -41,14 +42,23 @@ function localLevel(value){return ui.levels&&ui.levels[value]||value}
 function localScript(value){return ui.scriptMap&&ui.scriptMap[value]||value}
 function resourceGroup(rows){return groupResources(rows,currentLocale)}
 function nodesForGoal(goal){const ids=new Set(goalMap[goal]||[]);return learningPath.filter(n=>ids.has(n.id))}
+function resourceLevelScore(resource,level){
+ const value=String(resource.level||'');
+ if(level==='入門')return /入門|零基礎/.test(value)?4:/初級/.test(value)?2:/全級|多級/.test(value)?1:0;
+ if(level==='初級')return /初級/.test(value)?4:/入門/.test(value)?2:/中級|全級|多級/.test(value)?1:0;
+ if(level==='中級')return /中級/.test(value)?4:/初級/.test(value)?2:/高級|全級|多級/.test(value)?1:0;
+ if(level==='高級')return /高級|中高級/.test(value)?4:/中級/.test(value)?2:/全級|多級/.test(value)?1:0;
+ return /全級|多級/.test(value)?4:1;
+}
 function featuredResources(){
  let rows=catalog.slice();
  if(selectedGoal){
   const cats=new Set(nodesForGoal(selectedGoal).flatMap(n=>n.categories));
   rows=rows.filter(r=>cats.has(r.category));
  }
+ rows.sort((a,b)=>resourceLevelScore(b,selectedLevel)-resourceLevelScore(a,selectedLevel));
  const g=resourceGroup(rows),primary=g.primary.slice(0,6),fallback=g.fallback.slice(0,Math.max(0,6-primary.length));
- return {primary,fallback};
+ return {primary,fallback,level:selectedLevel};
 }
 function renderResourceCard(r,kind){
  const card=document.createElement('article');card.className='resource-card';
@@ -69,6 +79,8 @@ function renderResourceCard(r,kind){
 function renderFeatured(){
  const box=qs('#resourceFeature');box.replaceChildren();
  const selected=featuredResources();
+ const rec=qs('#resourceRecommendationNote');
+ if(rec)rec.textContent=selectedLevel&&selectedGoal?ui.recommendationNote(selectedLevel):'';
  selected.primary.forEach(r=>box.append(renderResourceCard(r,'native')));
  selected.fallback.forEach(r=>box.append(renderResourceCard(r,'english')));
  if(!selected.primary.length&&!selected.fallback.length){
@@ -97,6 +109,10 @@ function renderGoals(){
    const idx=goalEntries.findIndex(x=>x[0]===selectedGoal), node=nodesForGoal(selectedGoal)[0];
    panel.querySelector('.goal-start-title').textContent=ui.goalStartTitle||'';
    panel.querySelector('.goal-start-body').textContent=(ui.goalStart||((g,p)=>g+' → '+p))(ui.goals[idx],node?(ui.pathTitles?.[node.order-1]||node.title):'');
+   const levelLabel=panel.querySelector('.goal-level-label');if(levelLabel)levelLabel.textContent=ui.goalLevelLabel||'Level';
+   const levelSelect=panel.querySelector('.goal-level-select');if(levelSelect){levelSelect.replaceChildren(new Option(ui.allLevels||'All levels',''),...['入門','初級','中級','高級'].map(v=>new Option(ui.levels[v]||v,v)));levelSelect.value=selectedLevel;}
+   const levelSelect=panel.querySelector('.goal-level-select');
+   if(levelSelect){levelSelect.value=selectedLevel;}
    panel.querySelector('.goal-start-action').textContent=ui.goalStartAction||ui.pathView;
    panel.querySelector('.goal-start-action').onclick=()=>node&&qs('#path-'+node.id)?.scrollIntoView({behavior:'smooth',block:'center'});
   }
@@ -144,7 +160,7 @@ function renderResources(){
  }
 }
 function setLocale(code){
- currentLocale=code;ui=Object.assign({},homepageMessages(code),homepageFlow(code),onboardingI18n[code]||onboardingI18n.en);document.documentElement.lang=code;document.title='LIFE RIVER · '+ui.categories;
+ currentLocale=code;ui=Object.assign({},homepageMessages(code),homepageFlow(code),onboardingI18n[code]||onboardingI18n.en,recommendationI18n[code]||recommendationI18n.en);document.documentElement.lang=code;document.title='LIFE RIVER · '+ui.categories;
  [ui.navHome,ui.navCategories,ui.navFeatured,ui.navAbout].forEach((v,i)=>{const a=qsAll('.site-nav a')[i];if(a)a.textContent=v;});
  qs('.language-picker b').textContent=ui.langLabel||ui.lang||'Language';
  const brand=brandLabels[code]||brandLabels.en;qs('.hero-eyebrow').textContent=brand[0];qs('.brand-caption strong').textContent=brand[1];qs('.brand-caption small').textContent=ui.categories;qs('#siteFooter').textContent='© 2026 LIFE RIVER · '+brand[1]+' · BUILD 02';
@@ -165,6 +181,7 @@ function setLocale(code){
 }
 qs('#searchForm').addEventListener('submit',e=>{e.preventDefault();renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});});
 query.addEventListener('input',renderResources);category.addEventListener('change',renderResources);level.addEventListener('change',renderResources);
+qs('#goalLevel')?.addEventListener('change',e=>{selectedLevel=e.target.value||'入門';renderGoals();renderFeatured();});
 qs('#clearFilters').addEventListener('click',()=>{query.value='';category.value='';level.value='';renderResources();});
 qsAll('.category-tile').forEach(b=>b.addEventListener('click',()=>{category.value=b.dataset.category;query.value='';renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});}));
 qsAll('.quick-links button').forEach(b=>b.addEventListener('click',()=>{const cat=b.dataset.category;if(cat){category.value=cat;query.value='';}else query.value=b.dataset.query||'';renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});}));
