@@ -111,8 +111,6 @@ function renderGoals(){
    panel.querySelector('.goal-start-body').textContent=(ui.goalStart||((g,p)=>g+' → '+p))(ui.goals[idx],node?(ui.pathTitles?.[node.order-1]||node.title):'');
    const levelLabel=panel.querySelector('.goal-level-label');if(levelLabel)levelLabel.textContent=ui.goalLevelLabel||'Level';
    const levelSelect=panel.querySelector('.goal-level-select');if(levelSelect){levelSelect.replaceChildren(new Option(ui.allLevels||'All levels',''),...['入門','初級','中級','高級'].map(v=>new Option(ui.levels[v]||v,v)));levelSelect.value=selectedLevel;}
-   const levelSelect=panel.querySelector('.goal-level-select');
-   if(levelSelect){levelSelect.value=selectedLevel;}
    panel.querySelector('.goal-start-action').textContent=ui.goalStartAction||ui.pathView;
    panel.querySelector('.goal-start-action').onclick=()=>node&&qs('#path-'+node.id)?.scrollIntoView({behavior:'smooth',block:'center'});
   }
