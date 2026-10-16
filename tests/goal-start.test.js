@@ -8,6 +8,6 @@ test('all 15 locales provide localized goal starting-point guidance',()=>{
   assert.ok(ui.goalStartTitle,locale+': goalStartTitle');
   assert.equal(typeof ui.goalStart,'function',locale+': goalStart');
   assert.ok(ui.goalStartAction,locale+': goalStartAction');
-  assert.match(ui.goalStart('A','B'),'A');
+  assert.ok(ui.goalStart('A','B').includes('A'),locale+': goalStart output');
  }
 });
