@@ -10,7 +10,8 @@
     "test": "node --test",
     "audit:catalog": "node scripts/audit-catalog.js",
     "queue:build": "node scripts/build-review-queue.js",
-    "discover": "node scripts/discover-resources.js"
+    "discover": "node scripts/discover-resources.js",
+    "verify:queue": "node scripts/verify-review-queue.js"
   },
   "devDependencies": {
     "vite": "^6.3.0"
