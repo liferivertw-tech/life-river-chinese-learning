@@ -1,7 +1,8 @@
 import './style.css';
 import {catalog,categories} from './catalog.js';
 import {groupResources,matchResource} from './resource-ranking.js';
-import {homepageMessages,homepageLocales} from './homepage-i18n.js';
+import {homepageMessages} from './homepage-i18n.js';
+import {homepageFlow,flowLocales as homepageLocales} from './homepage-flow-i18n.js';
 import {homepageFlow} from './homepage-flow-i18n.js';
 import {learningPath} from './learning-path.js';
 import {coverageSummary} from './coverage-matrix.js';
