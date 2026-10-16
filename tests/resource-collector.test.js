@@ -9,6 +9,7 @@ test('buildDiscoveryTasks prioritizes uncovered learning nodes',()=>{
  assert.ok(tasks.every(t=>t.locale==='my'));
  assert.ok(tasks.some(t=>t.priority==='high'||t.priority==='medium'));
  assert.ok(tasks.every(t=>Array.isArray(t.queries)&&t.queries.length===3));
+ assert.ok(tasks.every(t=>t.level));
 });
 
 test('normalizeUrl removes tracking parameters and fragments',()=>{
@@ -25,6 +26,11 @@ test('verified candidates require evidence url and check date',()=>{
  assert.equal(result.valid,false);
  assert.ok(result.issues.includes('verified-without-language-evidence'));
  assert.ok(result.issues.includes('verified-without-check-date'));
+});
+
+test('unverified discovered candidates may use a claimed language',()=>{
+ const result=validateCandidate({title:'X',url:'https://example.com',provider:'P',category:'courses',level:'入門',teachingLanguages:[],languageVerified:false,languageClaimed:'th'});
+ assert.equal(result.valid,true);
 });
 
 test('queue and promote verified candidate',()=>{
