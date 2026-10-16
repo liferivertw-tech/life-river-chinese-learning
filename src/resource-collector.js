@@ -16,6 +16,7 @@ export function buildDiscoveryTasks(catalog,languages){
    locale:gap.locale,
    nodeId:gap.nodeId,
    categories:[...node.categories],
+   level:node.level,
    currentStatus:gap.status,
    priority:gap.status==='gap'?'high':'medium',
    queries:[
@@ -55,7 +56,8 @@ export function validateCandidate(candidate){
  if(!candidate?.provider)issues.push('missing-provider');
  if(!candidate?.category)issues.push('missing-category');
  if(!candidate?.level)issues.push('missing-level');
- if(!Array.isArray(candidate?.teachingLanguages)||candidate.teachingLanguages.length===0)issues.push('missing-teaching-language');
+ const teachingLanguages=Array.isArray(candidate?.teachingLanguages)?candidate.teachingLanguages:[];
+ if(teachingLanguages.length===0&&!candidate?.languageClaimed)issues.push('missing-teaching-language');
  if(candidate?.languageVerified===true&&!candidate?.languageEvidenceUrl)issues.push('verified-without-language-evidence');
  if(candidate?.languageVerified===true&&!candidate?.checkedAt)issues.push('verified-without-check-date');
  return {valid:issues.length===0,issues};
