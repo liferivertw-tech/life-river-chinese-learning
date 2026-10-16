@@ -11,9 +11,11 @@
     "audit:catalog": "node scripts/audit-catalog.js",
     "queue:build": "node scripts/build-review-queue.js",
     "discover": "node scripts/discover-resources.js",
-    "verify:queue": "node scripts/verify-review-queue.js"
+    "verify:queue": "node scripts/verify-review-queue.js",
+    "verify:visual": "node scripts/verify-15-language-ui.js"
   },
   "devDependencies": {
+    "playwright": "^1.64.1",
     "vite": "^6.3.0"
   }
 }
