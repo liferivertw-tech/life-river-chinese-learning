@@ -55,10 +55,11 @@ async function checkLocale(page,locale,viewportName,viewport){
   await page.setViewportSize(viewport);
   await page.goto(BASE_URL,{waitUntil:'networkidle'});
   await page.selectOption('#lang',locale);
-  await page.waitForTimeout(80);
+  await page.waitForFunction(expected => document.querySelector('.hero h1')?.textContent?.trim() === expected, flowHero(locale));
 
   const expected=homepageMessages(locale);
   const flow=homepageFlow(locale);
+  function flowHero(code){ return homepageFlow(code).hero[0]; }
   const actual=await page.evaluate(()=>({
     lang:document.documentElement.lang,
     title:document.title,
@@ -79,7 +80,7 @@ async function checkLocale(page,locale,viewportName,viewport){
   }));
 
   assert(actual.lang===locale,`${locale}/${viewportName}: document language mismatch`);
-  assert(actual.hero===flow.hero[0],`${locale}/${viewportName}: hero text mismatch`);
+  assert(actual.hero===flow.hero[0],`${locale}/${viewportName}: hero text mismatch (actual: ${actual.hero}; expected: ${flow.hero[0]})`);
   assert(actual.goalsTitle===flow.goalTitle,`${locale}/${viewportName}: goals title mismatch`);
   assert(actual.pathTitle===flow.pathTitle,`${locale}/${viewportName}: path title mismatch`);
   assert(actual.resourceTitle===flow.resourceTitle,`${locale}/${viewportName}: resource title mismatch`);
