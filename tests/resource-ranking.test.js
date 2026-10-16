@@ -24,3 +24,10 @@ test('search matches localized category names and tags',()=>{
  assert.equal(matchResource(thai,'ชีวิตประจำวัน','ภาษาจีนในชีวิตประจำวัน'),true);
  assert.equal(matchResource(thai,'nonexistent','ภาษาจีนในชีวิตประจำวัน'),false);
 });
+
+test('other-language resources stay out of primary and English fallback tiers',()=>{
+ const grouped=groupResources([{id:'ko',languageVerified:true,teachingLanguages:['ko']}],'th');
+ assert.deepEqual(grouped.primary,[]);
+ assert.deepEqual(grouped.fallback,[]);
+ assert.deepEqual(grouped.other.map(x=>x.id),['ko']);
+});

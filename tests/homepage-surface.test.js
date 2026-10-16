@@ -27,3 +27,10 @@ test('goal cards expose selected state accessibly and mobile controls have touch
  assert.match(css,/\.goal-card,.path-resource-button,.category-tile/);
  assert.match(css,/min-height:44px/);
 });
+
+test('homepage persists locale across visits and exposes optional other-language section',()=>{
+ assert.match(main,/localStorage\.setItem\('lr-chinese-locale'/);
+ assert.match(main,/localStorage\.getItem\('lr-chinese-locale'/);
+ assert.match(main,/className='resource-other'/);
+ assert.match(main,/ui\.other/);
+});

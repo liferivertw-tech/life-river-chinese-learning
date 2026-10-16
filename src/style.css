@@ -11,3 +11,8 @@
 .section-heading>.section-link{margin-left:0}
 .section-heading h2,.section-intro,.learning-path-intro,.resource-section-intro{overflow-wrap:anywhere}
 }
+
+.resource-other{grid-column:1/-1;margin-top:1rem;border-top:1px solid rgba(0,0,0,.12);padding-top:1rem}
+.resource-other summary{cursor:pointer;font-weight:700;padding:.75rem 0}
+.resource-other-grid{margin-top:.75rem}
+.resource-badge.other{opacity:.78}
