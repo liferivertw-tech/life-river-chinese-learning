@@ -53,6 +53,8 @@ async function metrics(page){
 }
 async function checkLocale(page,locale,viewportName,viewport){
   await page.setViewportSize(viewport);
+  const pageErrors=[];
+  page.on('pageerror',error=>pageErrors.push(error.message));
   await page.goto(BASE_URL,{waitUntil:'networkidle'});
   await page.selectOption('#lang',locale);
   await page.waitForTimeout(250);
@@ -79,7 +81,7 @@ async function checkLocale(page,locale,viewportName,viewport){
   }));
 
   assert(actual.lang===locale,`${locale}/${viewportName}: document language mismatch`);
-  assert(actual.hero===flow.hero[0],`${locale}/${viewportName}: hero text mismatch (actual: ${actual.hero}; expected: ${flow.hero[0]})`);
+  assert(actual.hero===flow.hero[0],`${locale}/${viewportName}: hero text mismatch (actual: ${actual.hero}; expected: ${flow.hero[0]}; pageErrors: ${pageErrors.join(' | ')||'none'})`);
   assert(actual.goalsTitle===flow.goalTitle,`${locale}/${viewportName}: goals title mismatch`);
   assert(actual.pathTitle===flow.pathTitle,`${locale}/${viewportName}: path title mismatch`);
   assert(actual.resourceTitle===flow.resourceTitle,`${locale}/${viewportName}: resource title mismatch`);
@@ -94,6 +96,7 @@ async function checkLocale(page,locale,viewportName,viewport){
   assert(actual.goalTexts.length===8 && actual.goalTexts.every(Boolean),`${locale}/${viewportName}: goal labels incomplete`);
   assert(actual.featureTexts.length===5 && actual.featureTexts.every(Boolean),`${locale}/${viewportName}: feature labels incomplete`);
 
+  assert(pageErrors.length===0,`${locale}/${viewportName}: browser runtime error: ${pageErrors.join(' | ')}`);
   const m=await metrics(page);
   assert(m.scrollWidth<=m.clientWidth+1,`${locale}/${viewportName}: horizontal overflow ${m.scrollWidth}>${m.clientWidth}`);
   assert(m.categoryCount===12,`${locale}/${viewportName}: expected 12 category tiles`);
