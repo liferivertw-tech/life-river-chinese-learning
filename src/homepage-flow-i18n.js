@@ -58,3 +58,18 @@ ja:['発音・声調・ピンイン','漢字・筆画・部首','基礎語彙と
 ko:['발음·성조·병음','한자·획·부수','기초 어휘와 문형','듣기·말하기·읽기·쓰기','대만 생활 중국어','직장과 유학','번체 중국어와 주음','TOCFL']
 };
 for(const [code,titles] of Object.entries(pathTitlePatches))flowI18n[code].pathTitles=titles;
+
+const surfacePatches={
+th:{features:['ฟรี / มีค่าใช้จ่าย','ระดับ','ภาษาที่ใช้สอน','ตัวเต็ม / ตัวย่อ','สถานะการตรวจสอบ'],levels:{'入門':'เริ่มต้น','初級':'พื้นฐาน','中級':'ระดับกลาง','高級':'ขั้นสูง','多級':'หลายระดับ'}},
+fil:{features:['Libre / may bayad','Antas','Wika ng pagtuturo','Tradisyonal / pinasimple','Katayuan ng pagsusuri'],levels:{'入門':'Baguhan','初級':'Pangunahing antas','中級':'Katamtaman','高級':'Mataas','多級':'Iba’t ibang antas'}},
+ja:{features:['無料／有料','レベル','教授言語','繁体字／簡体字','確認状況'],levels:{'入門':'入門','初級':'初級','中級':'中級','高級':'上級','多級':'複数レベル'}},
+ko:{features:['무료 / 유료','수준','교육 언어','번체 / 간체','검증 상태'],levels:{'入門':'입문','初級':'초급','中級':'중급','高級':'고급','多級':'여러 수준'}},
+my:{features:['အခမဲ့ / အခပေး','အဆင့်','သင်ကြားရေးဘာသာစကား','ရိုးရာ / ရိုးရှင်း','စစ်ဆေးမှုအခြေအနေ'],levels:{'入門':'အစပြု','初級':'အခြေခံ','中級':'အလယ်အလတ်','高級':'အဆင့်မြင့်','多級':'အဆင့်မျိုးစုံ'}},
+km:{features:['ឥតគិតថ្លៃ / បង់ប្រាក់','កម្រិត','ភាសាបង្រៀន','អក្សរបុរាណ / អក្សរងាយ','ស្ថានភាពផ្ទៀងផ្ទាត់'],levels:{'入門':'ចាប់ផ្តើម','初級':'មូលដ្ឋាន','中級':'មធ្យម','高級':'កម្រិតខ្ពស់','多級':'ច្រើនកម្រិត'}},
+ms:{features:['Percuma / berbayar','Tahap','Bahasa pengajaran','Tradisional / ringkas','Status pengesahan'],levels:{'入門':'Pemula','初級':'Asas','中級':'Pertengahan','高級':'Lanjutan','多級':'Pelbagai tahap'}},
+hi:{features:['मुफ़्त / सशुल्क','स्तर','शिक्षण भाषा','पारंपरिक / सरल','सत्यापन स्थिति'],levels:{'入門':'शुरुआती','初級':'प्रारंभिक','中級':'मध्यवर्ती','高級':'उन्नत','多級':'कई स्तर'}},
+fr:{features:['Gratuit / payant','Niveau','Langue d’enseignement','Traditionnel / simplifié','État de vérification'],levels:{'入門':'Débutant','初級':'Élémentaire','中級':'Intermédiaire','高級':'Avancé','多級':'Plusieurs niveaux'}},
+es:{features:['Gratis / de pago','Nivel','Idioma de enseñanza','Tradicional / simplificado','Estado de verificación'],levels:{'入門':'Principiante','初級':'Básico','中級':'Intermedio','高級':'Avanzado','多級':'Varios niveles'}},
+de:{features:['Kostenlos / kostenpflichtig','Niveau','Unterrichtssprache','Traditionell / vereinfacht','Prüfstatus'],levels:{'入門':'Anfänger','初級':'Grundstufe','中級':'Mittelstufe','高級':'Fortgeschritten','多級':'Mehrere Niveaus'}}
+};
+for(const [code,patch] of Object.entries(surfacePatches))Object.assign(flowI18n[code],patch);
