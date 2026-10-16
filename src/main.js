@@ -7,6 +7,10 @@ import {learningPath,resourcesForNode} from './learning-path.js';
 import {renderShell} from './ui-shell.js';
 
 const langs=[['zh-TW','繁體中文'],['en','English'],['vi','Tiếng Việt'],['id','Bahasa Indonesia'],['th','ไทย'],['fil','Filipino'],['ja','日本語'],['ko','한국어'],['my','မြန်မာ'],['km','ភាសាខ្មែរ'],['ms','Bahasa Melayu'],['hi','हिन्दी'],['fr','Français'],['es','Español'],['de','Deutsch']];
+const pathHeadings={
+ 'zh-TW':'從零開始學中文｜學習路徑','en':'Start Chinese from Zero｜Learning Path','vi':'Bắt đầu học tiếng Trung từ số 0｜Lộ trình học','id':'Belajar Mandarin dari Nol｜Jalur Belajar','th':'เริ่มเรียนภาษาจีนจากศูนย์｜เส้นทางการเรียน','fil':'Magsimulang Matuto ng Chinese mula Zero｜Learning Path','ja':'ゼロから学ぶ中国語｜学習ルート','ko':'처음부터 배우는 중국어｜학습 경로','my':'တရုတ်ဘာသာကို အစမှ လေ့လာရန်｜သင်ယူလမ်းကြောင်း','km':'រៀនភាសាចិនពីសូន្យ｜ផ្លូវសិក្សា','ms':'Belajar Bahasa Cina dari Sifar｜Laluan Pembelajaran','hi':'शून्य से चीनी सीखें｜अध्ययन मार्ग','fr':'Apprendre le chinois à partir de zéro｜Parcours','es':'Aprender chino desde cero｜Ruta de aprendizaje','de':'Chinesisch von Grund auf lernen｜Lernpfad'};
+const pathIntros={
+ 'zh-TW':'依學習順序找到適合的網路教材；系統優先顯示您的介面母語資源，不足時以英文補充。','en':'Follow the learning order to find suitable online resources. Your interface language is prioritized, with English as fallback.','vi':'Tìm tài nguyên trực tuyến theo đúng thứ tự học. Hệ thống ưu tiên tiếng mẹ đẻ của giao diện và dùng tiếng Anh để bổ sung.','id':'Temukan sumber belajar daring sesuai urutan belajar. Bahasa antarmuka Anda diprioritaskan, lalu bahasa Inggris sebagai pelengkap.','th':'ค้นหาแหล่งเรียนออนไลน์ตามลำดับการเรียน ระบบจะให้ความสำคัญกับภาษาของอินเทอร์เฟซ และใช้ภาษาอังกฤษเสริมเมื่อจำเป็น','fil':'Sundin ang pagkakasunod-sunod ng pag-aaral upang makahanap ng angkop na online resources. Uunahin ang wika ng interface at English ang fallback.','ja':'学習順に適したオンライン教材を探せます。表示言語の教材を優先し、不足時は英語で補います。','ko':'학습 순서에 따라 적합한 온라인 자료를 찾습니다. 인터페이스 언어 자료를 우선하고 부족하면 영어로 보완합니다.','my':'သင်ယူအစီအစဉ်အတိုင်း သင့်တော်သော အွန်လိုင်းအရင်းအမြစ်များကို ရှာဖွေပါ။ မျက်နှာပြင်ဘာသာစကားကို ဦးစားပေးပြီး မလုံလောက်ပါက အင်္ဂလိပ်ကို ဖြည့်စွက်အသုံးပြုသည်။','km':'ស្វែងរកធនធានអនឡាញតាមលំដាប់សិក្សា។ ប្រព័ន្ធផ្តល់អាទិភាពដល់ភាសាចំណុចប្រទាក់ ហើយប្រើភាសាអង់គ្លេសជាជំនួយ។','ms':'Cari sumber pembelajaran dalam talian mengikut urutan belajar. Bahasa antara muka diutamakan dan bahasa Inggeris digunakan sebagai sokongan.','hi':'सीखने के क्रम के अनुसार उपयुक्त ऑनलाइन संसाधन खोजें। आपकी इंटरफ़ेस भाषा को प्राथमिकता दी जाएगी और अंग्रेज़ी बैकअप होगी।','fr':'Trouvez des ressources en ligne selon l’ordre d’apprentissage. La langue de l’interface est prioritaire, puis l’anglais en complément.','es':'Encuentra recursos en línea según el orden de aprendizaje. Se prioriza el idioma de la interfaz y el inglés sirve de apoyo.','de':'Finde Online-Ressourcen entlang der Lernreihenfolge. Die Sprache der Benutzeroberfläche hat Vorrang, Englisch dient als Ergänzung.'};
 let currentLocale='zh-TW';
 let ui=homepageMessages(currentLocale);
 const qs=s=>document.querySelector(s);
@@ -19,15 +23,10 @@ const level=qs('#levelFilter');
 const results=qs('#resourceResults');
 const pathGrid=qs('#pathGrid');
 const categoryMap=Object.fromEntries(categories);
-
 langs.forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;qs('#lang').append(o)});
 
 function localizedCategory(id){return ui.categoryNames?.[id]??categoryMap[id]??id}
-function statusLabel(r){
- if(r.status==='verified')return '✓ 已核驗';
- if(r.checkedAt)return '◷ 已檢查 '+r.checkedAt;
- return '○ 待核驗';
-}
+function statusLabel(r){return r.checkedAt?`✓ ${r.checkedAt}`:ui.candidate}
 function renderResources(){
  const q=query.value.trim().toLocaleLowerCase();
  const filtered=catalog.filter(r=>(!category.value||r.category===category.value)&&(!level.value||r.level===level.value)&&matchResource(r,q,localizedCategory(r.category)));
@@ -52,9 +51,11 @@ function renderLearningPath(){
   const {grouped}=resourcesForNode(node,catalog,currentLocale);
   const card=document.createElement('article');card.className='path-card';
   const top=document.createElement('div');top.className='path-step';top.innerHTML=`<span class="path-number">${node.order}</span><span class="path-icon">${node.icon}</span>`;card.append(top);
-  const h=document.createElement('h3');h.textContent=node.title;card.append(h);
-  const lev=document.createElement('p');lev.className='path-level';lev.textContent=node.level;card.append(lev);
-  const goals=document.createElement('ul');goals.className='path-goals';node.goals.forEach(goal=>{const li=document.createElement('li');li.textContent=goal;goals.append(li)});card.append(goals);
+  const h=document.createElement('h3');h.textContent=currentLocale==='zh-TW'?node.title:node.categories.map(localizedCategory).join(' · ');card.append(h);
+  const lev=document.createElement('p');lev.className='path-level';lev.textContent=ui.levels?.[node.level]??(node.level==='零基礎'?ui.levels?.['入門']??node.level:node.level);card.append(lev);
+  const goals=document.createElement('ul');goals.className='path-goals';
+  const visibleGoals=currentLocale==='zh-TW'?node.goals:node.categories.map(localizedCategory);
+  visibleGoals.forEach(goal=>{const li=document.createElement('li');li.textContent=goal;goals.append(li)});card.append(goals);
   const sum=document.createElement('p');sum.className='path-resource-summary';sum.textContent=`${ui.native} ${grouped.primary.length} · ${ui.english} ${grouped.fallback.length} · ${ui.other} ${grouped.other.length}`;card.append(sum);
   const actions=document.createElement('div');actions.className='path-actions';node.categories.forEach(cat=>{const b=document.createElement('button');b.type='button';b.textContent=localizedCategory(cat);b.addEventListener('click',()=>{category.value=cat;query.value='';renderResources();qs('#resources').scrollIntoView({behavior:'smooth'});});actions.append(b)});card.append(actions);
   pathGrid.append(card);
@@ -67,7 +68,8 @@ function setLocale(code){
  qs('.language-picker span').textContent=ui.langLabel;qs('.hero h1').textContent=ui.heroTitle;qs('.hero-en').textContent=ui.heroEnglish??'';qs('.hero-intro').textContent=ui.heroIntro;qs('.hero-sub').textContent=ui.heroSub;
  query.placeholder=ui.searchPlaceholder;qs('.search-button').textContent=ui.searchButton;qs('.filter-link').textContent=ui.advanced;qs('.quick-links span').textContent='🔥 '+ui.popular;
  qsAll('.quick-links button').forEach((b,i)=>{b.textContent=ui.quick[i]??b.textContent;});
- const heads=qsAll('.section-heading h2');if(heads[0])heads[0].textContent=ui.categories;if(heads[2])heads[2].textContent=ui.featured;
+ const heads=qsAll('.section-heading h2');if(heads[0])heads[0].textContent=ui.categories;if(heads[1])heads[1].textContent=pathHeadings[code]??pathHeadings.en;if(heads[2])heads[2].textContent=ui.featured;
+ const intro=qs('.learning-path-intro');if(intro)intro.textContent=pathIntros[code]??pathIntros.en;
  const view=qs('#directory .section-heading a');if(view)view.textContent=ui.viewAll+' →';
  qsAll('.category-tile').forEach(el=>{el.querySelector('.tile-title').textContent=localizedCategory(el.dataset.category);});
  const labels=qsAll('.filters label');if(labels[0])labels[0].firstChild.textContent=ui.categoryFilter+' ';if(labels[1])labels[1].firstChild.textContent=ui.levelFilter+' ';
