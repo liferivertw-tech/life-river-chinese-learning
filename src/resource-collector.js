@@ -34,7 +34,7 @@ export function normalizeUrl(value){
   const url=new URL(value);
   url.hash='';
   url.hostname=url.hostname.toLowerCase();
-  if(url.pathname.length>1)url.pathname=url.pathname.replace(/\/+$/,'');
+  // Preserve trailing slashes; URL parsing already canonicalizes the host and root path.
   for(const key of [...url.searchParams.keys()]){
    if(/^utm_/i.test(key)||['fbclid','gclid'].includes(key))url.searchParams.delete(key);
   }
