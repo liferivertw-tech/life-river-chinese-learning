@@ -73,3 +73,21 @@ es:{features:['Gratis / de pago','Nivel','Idioma de enseñanza','Tradicional / s
 de:{features:['Kostenlos / kostenpflichtig','Niveau','Unterrichtssprache','Traditionell / vereinfacht','Prüfstatus'],levels:{'入門':'Anfänger','初級':'Grundstufe','中級':'Mittelstufe','高級':'Fortgeschritten','多級':'Mehrere Niveaus'}}
 };
 for(const [code,patch] of Object.entries(surfacePatches))Object.assign(flowI18n[code],patch);
+
+const resourceMeta={costMap:{'免費':'Free','免費內容':'Free content','部分免費':'Partly free','付費':'Paid','付費內容':'Paid content','未核驗':'Not verified'},scriptMap:{'繁體中文':'Traditional Chinese','簡體中文':'Simplified Chinese','繁體與簡體選項':'Traditional & Simplified options','未核驗':'Not verified'}};
+const metaLocal={
+'vi':{costMap:{'免費':'Miễn phí','免費內容':'Nội dung miễn phí','部分免費':'Miễn phí một phần','付費':'Trả phí','付費內容':'Nội dung trả phí','未核驗':'Chưa xác minh'},scriptMap:{'繁體中文':'Phồn thể','簡體中文':'Giản thể','繁體與簡體選項':'Phồn thể & Giản thể','未核驗':'Chưa xác minh'}},
+'id':{costMap:{'免費':'Gratis','免費內容':'Konten gratis','部分免費':'Sebagian gratis','付費':'Berbayar','付費內容':'Konten berbayar','未核驗':'Belum diverifikasi'},scriptMap:{'繁體中文':'Tradisional','簡體中文':'Sederhana','繁體與簡體選項':'Tradisional & sederhana','未核驗':'Belum diverifikasi'}},
+'th':{costMap:{'免費':'ฟรี','免費內容':'เนื้อหาฟรี','部分免費':'ฟรีบางส่วน','付費':'มีค่าใช้จ่าย','付費內容':'เนื้อหาแบบชำระเงิน','未核驗':'ยังไม่ตรวจสอบ'},scriptMap:{'繁體中文':'ตัวเต็ม','簡體中文':'ตัวย่อ','繁體與簡體選項':'ตัวเต็มและตัวย่อ','未核驗':'ยังไม่ตรวจสอบ'}},
+'fil':{costMap:{'免費':'Libre','免費內容':'Libreng content','部分免費':'Bahagyang libre','付費':'May bayad','付費內容':'Bayad na content','未核驗':'Hindi pa beripikado'},scriptMap:{'繁體中文':'Tradisyonal','簡體中文':'Pinasimple','繁體與簡體選項':'Tradisyonal at pinasimple','未核驗':'Hindi pa beripikado'}},
+'ja':{costMap:{'免費':'無料','免費內容':'無料コンテンツ','部分免費':'一部無料','付費':'有料','付費內容':'有料コンテンツ','未核驗':'未確認'},scriptMap:{'繁體中文':'繁体字','簡體中文':'簡体字','繁體與簡體選項':'繁体字・簡体字','未核驗':'未確認'}},
+'ko':{costMap:{'免費':'무료','免費內容':'무료 콘텐츠','部分免費':'일부 무료','付費':'유료','付費內容':'유료 콘텐츠','未核驗':'미검증'},scriptMap:{'繁體中文':'번체','簡體中文':'간체','繁體與簡體選項':'번체·간체','未核驗':'미검증'}},
+'my':{costMap:{'免費':'အခမဲ့','免費內容':'အခမဲ့အကြောင်းအရာ','部分免費':'တစ်စိတ်တစ်ပိုင်းအခမဲ့','付費':'အခပေး','付費內容':'အခပေးအကြောင်းအရာ','未核驗':'မစစ်ဆေးရသေး'},scriptMap:{'繁體中文':'ရိုးရာတရုတ်စာ','簡體中文':'ရိုးရှင်းတရုတ်စာ','繁體與簡體選項':'ရိုးရာနှင့် ရိုးရှင်း','未核驗':'မစစ်ဆေးရသေး'}},
+'km':{costMap:{'免費':'ឥតគិតថ្លៃ','免費內容':'មាតិកាឥតគិតថ្លៃ','部分免費':'ឥតគិតថ្លៃមួយផ្នែក','付費':'បង់ប្រាក់','付費內容':'មាតិកាបង់ប្រាក់','未核驗':'មិនទាន់ផ្ទៀងផ្ទាត់'},scriptMap:{'繁體中文':'អក្សរបុរាណ','簡體中文':'អក្សរងាយ','繁體與簡體選項':'អក្សរបុរាណ និងអក្សរងាយ','未核驗':'មិនទាន់ផ្ទៀងផ្ទាត់'}},
+'ms':{costMap:{'免費':'Percuma','免費內容':'Kandungan percuma','部分免費':'Sebahagian percuma','付費':'Berbayar','付費內容':'Kandungan berbayar','未核驗':'Belum disahkan'},scriptMap:{'繁體中文':'Tradisional','簡體中文':'Ringkas','繁體與簡體選項':'Tradisional & ringkas','未核驗':'Belum disahkan'}},
+'hi':{costMap:{'免費':'मुफ़्त','免費內容':'मुफ़्त सामग्री','部分免費':'आंशिक रूप से मुफ़्त','付費':'सशुल्क','付費內容':'सशुल्क सामग्री','未核驗':'सत्यापित नहीं'},scriptMap:{'繁體中文':'पारंपरिक','簡體中文':'सरल चीनी','繁體與簡體選項':'पारंपरिक और सरल','未核驗':'सत्यापित नहीं'}},
+'fr':{costMap:{'免費':'Gratuit','免費內容':'Contenu gratuit','部分免費':'Partiellement gratuit','付費':'Payant','付費內容':'Contenu payant','未核驗':'Non vérifié'},scriptMap:{'繁體中文':'Traditionnel','簡體中文':'Simplifié','繁體與簡體選項':'Traditionnel & simplifié','未核驗':'Non vérifié'}},
+'es':{costMap:{'免費':'Gratis','免費內容':'Contenido gratuito','部分免費':'Parcialmente gratis','付費':'De pago','付費內容':'Contenido de pago','未核驗':'No verificado'},scriptMap:{'繁體中文':'Tradicional','簡體中文':'Simplificado','繁體與簡體選項':'Tradicional y simplificado','未核驗':'No verificado'}},
+'de':{costMap:{'免費':'Kostenlos','免費內容':'Kostenlose Inhalte','部分免費':'Teilweise kostenlos','付費':'Kostenpflichtig','付費內容':'Kostenpflichtige Inhalte','未核驗':'Nicht geprüft'},scriptMap:{'繁體中文':'Traditionell','簡體中文':'Vereinfacht','繁體與簡體選項':'Traditionell & vereinfacht','未核驗':'Nicht geprüft'}}
+};
+for(const locale of flowLocales)Object.assign(flowI18n[locale],locale==='zh-TW'?{costMap:{'免費':'免費','免費內容':'免費內容','部分免費':'部分免費','付費':'付費','付費內容':'付費內容','未核驗':'未核驗'},scriptMap:{'繁體中文':'繁體中文','簡體中文':'簡體中文','繁體與簡體選項':'繁體與簡體選項','未核驗':'未核驗'}}:{...resourceMeta,...(metaLocal[locale]||{})});
