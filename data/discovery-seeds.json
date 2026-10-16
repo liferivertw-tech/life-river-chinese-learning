@@ -1,0 +1,62 @@
+[
+  {
+    "locale": "th",
+    "nodeId": "sound",
+    "title": "現代華語系列（3冊）",
+    "url": "https://www.mtc.ntnu.edu.tw/eng/book/book-show-12.html",
+    "provider": "國立臺灣師範大學國語教學中心",
+    "teachingLanguages": ["th"],
+    "languageVerified": true,
+    "languageEvidenceUrl": "https://www.mtc.ntnu.edu.tw/eng/book/book-show-12.html",
+    "checkedAt": "2026-10-16",
+    "evidenceNote": "官方教材介紹明確說明針對泰國地區華語學習者，所有內容皆有泰文翻譯，第一冊含語音與漢字系統。"
+  },
+  {
+    "locale": "id",
+    "nodeId": "basics",
+    "title": "Let's Learn Mandarin-Book1（Indonesian）",
+    "url": "https://taiwancenter.taiwan-world.net/material/basic/content/77",
+    "provider": "臺灣華語文學習中心",
+    "teachingLanguages": ["id"],
+    "languageVerified": true,
+    "languageEvidenceUrl": "https://taiwancenter.taiwan-world.net/material/basic/content/77",
+    "checkedAt": "2026-10-16",
+    "evidenceNote": "教材頁明確標示 Indonesian 版本、TOCFL Novice，含課本、作業本、教師手冊、音檔與教學示範。"
+  },
+  {
+    "locale": "vi",
+    "nodeId": "basics",
+    "title": "Let's Learn Mandarin-Book1（Vietnamese）",
+    "url": "https://taiwancenter.taiwan-world.net/material/basic/content/75",
+    "provider": "臺灣華語文學習中心",
+    "teachingLanguages": ["vi"],
+    "languageVerified": true,
+    "languageEvidenceUrl": "https://taiwancenter.taiwan-world.net/material/basic/content/75",
+    "checkedAt": "2026-10-16",
+    "evidenceNote": "教材頁明確標示 Vietnamese 版本、TOCFL Novice，提供課本、作業本、教師手冊、音檔與教學示範。"
+  },
+  {
+    "locale": "ms",
+    "nodeId": "skills",
+    "title": "Introductory Mandarin Level III",
+    "url": "https://ufuture.uitm.edu.my/home/course_detail.php?course=TMC501",
+    "provider": "Universiti Teknologi MARA",
+    "teachingLanguages": ["ms"],
+    "languageVerified": true,
+    "languageEvidenceUrl": "https://ufuture.uitm.edu.my/home/course_detail.php?course=TMC501",
+    "checkedAt": "2026-10-16",
+    "evidenceNote": "官方課程說明包含 Malay lyrics translations，並以馬來西亞文化情境輔助中文聽說讀寫。"
+  },
+  {
+    "locale": "fil",
+    "nodeId": "daily",
+    "title": "Taipei Migrant Worker School multilingual Chinese resources",
+    "url": "https://fw.wda.gov.tw/wda-employer/home/file/2c95efb39f1806d6019f25d48755086a",
+    "provider": "勞動部勞動力發展署",
+    "teachingLanguages": ["fil"],
+    "languageVerified": true,
+    "languageEvidenceUrl": "https://fw.wda.gov.tw/wda-employer/home/file/2c95efb39f1806d6019f25d48755086a",
+    "checkedAt": "2026-10-16",
+    "evidenceNote": "官方多語公告明確列出 Tagalog 中文學習版本，並說明影片依主題及難易度分類。"
+  }
+]
