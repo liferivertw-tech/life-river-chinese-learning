@@ -12,6 +12,23 @@ const goalMap={zero:['sound'],daily:['taiwan'],speaking:['skills'],literacy:['ch
 const goalEntries=[['zero','🧭'],['daily','🛍️'],['speaking','🎧'],['literacy','📚'],['taiwan','🏮'],['work','💼'],['traditional','ㄅ'],['tocfl','🎓']];
 const qs=s=>document.querySelector(s),qsAll=s=>document.querySelectorAll(s);
 let currentLocale='zh-TW',ui={},selectedGoal=null;
+const brandLabels={
+ 'zh-TW':['LIFE RIVER · 中文學習資源網','生命河｜中文學習資源網'],
+ en:['LIFE RIVER · CHINESE LEARNING HUB','LIFE RIVER · Chinese Learning Hub'],
+ vi:['LIFE RIVER · TRUNG TÂM HỌC TIẾNG TRUNG','LIFE RIVER · Trung tâm học tiếng Trung'],
+ id:['LIFE RIVER · PUSAT BELAJAR MANDARIN','LIFE RIVER · Pusat Belajar Mandarin'],
+ th:['LIFE RIVER · ศูนย์เรียนภาษาจีน','LIFE RIVER · ศูนย์เรียนภาษาจีน'],
+ fil:['LIFE RIVER · CHINESE LEARNING HUB','LIFE RIVER · Sentro ng Pag-aaral ng Chinese'],
+ ja:['LIFE RIVER · 中国語学習リソース','LIFE RIVER · 中国語学習リソース網'],
+ ko:['LIFE RIVER · 중국어 학습 리소스 허브','LIFE RIVER · 중국어 학습 리소스 허브'],
+ my:['LIFE RIVER · တရုတ်ဘာသာ လေ့လာရေးအရင်းအမြစ်','LIFE RIVER · တရုတ်ဘာသာ လေ့လာရေးအရင်းအမြစ်'],
+ km:['LIFE RIVER · មជ្ឈមណ្ឌលធនធានរៀនភាសាចិន','LIFE RIVER · មជ្ឈមណ្ឌលរៀនភាសាចិន'],
+ ms:['LIFE RIVER · HAB PEMBELAJARAN BAHASA CINA','LIFE RIVER · Hab Pembelajaran Bahasa Cina'],
+ hi:['LIFE RIVER · चीनी अध्ययन संसाधन केंद्र','LIFE RIVER · चीनी अध्ययन संसाधन केंद्र'],
+ fr:['LIFE RIVER · CENTRE DE RESSOURCES DE CHINOIS','LIFE RIVER · Centre de ressources de chinois'],
+ es:['LIFE RIVER · CENTRO DE RECURSOS DE CHINO','LIFE RIVER · Centro de recursos de chino'],
+ de:['LIFE RIVER · CHINESISCH-LERNZENTRUM','LIFE RIVER · Chinesisch-Lernzentrum']
+};
 renderShell(qs('#app'),categories);
 const langSelect=qs('#lang');
 langs.forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;langSelect.append(o);});
@@ -62,7 +79,7 @@ function renderFeatured(){
 function renderGoals(){
  const grid=qs('#goalGrid');grid.replaceChildren();
  goalEntries.forEach(([id,icon])=>{
-  const b=document.createElement('button');b.type='button';b.className='goal-card'+(selectedGoal===id?' selected':'');
+  const b=document.createElement('button');b.type='button';b.className='goal-card'+(selectedGoal===id?' selected':'');b.setAttribute('aria-pressed',String(selectedGoal===id));
   const i=document.createElement('span');i.className='goal-icon';i.textContent=icon;b.append(i);
   const h=document.createElement('strong');h.textContent=ui.goals[goalEntries.findIndex(x=>x[0]===id)];b.append(h);
   const related=nodesForGoal(id)[0];const p=document.createElement('span');p.textContent=related?(ui.pathTitles&&ui.pathTitles[related.order-1]||related.title):'';b.append(p);
@@ -109,6 +126,7 @@ function setLocale(code){
  currentLocale=code;ui=Object.assign({},homepageMessages(code),homepageFlow(code));document.documentElement.lang=code;document.title='LIFE RIVER · '+ui.categories;
  ui.nav.forEach((v,i)=>{const a=qsAll('.site-nav a')[i];if(a)a.textContent=v;});
  qs('.language-picker b').textContent=ui.langLabel||ui.lang||'Language';
+ const brand=brandLabels[code]||brandLabels.en;qs('.hero-eyebrow').textContent=brand[0];qs('.brand-caption strong').textContent=brand[1];qs('.brand-caption small').textContent=ui.categories;qs('#siteFooter').textContent='© 2026 LIFE RIVER · '+brand[1]+' · BUILD 02';
  qs('.hero h1').textContent=ui.hero[0];qs('.hero-en').textContent='';qs('.hero-intro').textContent=ui.hero[1];qs('.hero-sub').textContent=ui.hero[2];qs('.hero-primary').textContent=ui.hero[3];qs('.hero-secondary').textContent=ui.hero[4];qs('.hero-proof-label').textContent=' '+ui.categories;
  qs('#goals h2').textContent=ui.goalTitle;qs('#goals .section-intro').textContent=ui.goalIntro;
  qs('#learningPath h2').textContent=ui.pathTitle;qs('.learning-path-intro').textContent=ui.pathIntro;
@@ -128,7 +146,7 @@ qs('#searchForm').addEventListener('submit',e=>{e.preventDefault();renderResourc
 query.addEventListener('input',renderResources);category.addEventListener('change',renderResources);level.addEventListener('change',renderResources);
 qs('#clearFilters').addEventListener('click',()=>{query.value='';category.value='';level.value='';renderResources();});
 qsAll('.category-tile').forEach(b=>b.addEventListener('click',()=>{category.value=b.dataset.category;query.value='';renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});}));
-qsAll('.quick-links button').forEach(b=>b.addEventListener('click',()=>{query.value=b.dataset.query||'';renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});}));
+qsAll('.quick-links button').forEach(b=>b.addEventListener('click',()=>{const cat=b.dataset.category;if(cat){category.value=cat;query.value='';}else query.value=b.dataset.query||'';renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});}));
 qs('#menuToggle').addEventListener('click',()=>{const open=qs('#menuToggle').getAttribute('aria-expanded')!=='true';qs('#menuToggle').setAttribute('aria-expanded',String(open));qs('#mainNav').classList.toggle('open',open);});
 langSelect.addEventListener('change',e=>{try{sessionStorage.setItem('lr-chinese-locale',e.target.value)}catch{}setLocale(e.target.value);});
 try{const saved=sessionStorage.getItem('lr-chinese-locale');if(saved&&homepageLocales.includes(saved))currentLocale=saved;}catch{}
