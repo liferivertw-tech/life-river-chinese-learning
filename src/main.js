@@ -60,6 +60,17 @@ function featuredResources(){
  const g=resourceGroup(rows),primary=g.primary.slice(0,6),fallback=g.fallback.slice(0,Math.max(0,6-primary.length));
  return {primary,fallback,level:selectedLevel};
 }
+function recommendationReasons(r,kind){
+ const reasons=[];
+ if(kind==='native')reasons.push(ui.reasonNative);
+ else if(kind==='english')reasons.push(ui.reasonEnglish);
+ const levelScore=resourceLevelScore(r,selectedLevel);
+ if(levelScore>=4)reasons.push(ui.reasonLevel);
+ if(r.status==='verified')reasons.push(ui.reasonVerified);
+ else if(r.checkedAt)reasons.push(ui.reasonChecked);
+ if(r.cost==='免費')reasons.push(ui.reasonFree);
+ return reasons.slice(0,3);
+}
 function renderResourceCard(r,kind){
  const card=document.createElement('article');card.className='resource-card';
  const badge=document.createElement('span');badge.className='resource-badge '+(kind==='native'?'native':'english');badge.textContent=kind==='native'?ui.nativeBadge:ui.englishBadge;card.append(badge);
@@ -71,8 +82,18 @@ function renderResourceCard(r,kind){
  summary.textContent=localizedSummary||ui.summaryPending;summary.setAttribute('lang',localizedSummary?(r.summaryLanguageByLocale?.[currentLocale]||currentLocale):currentLocale);body.append(summary);
  const tags=document.createElement('div');tags.className='resource-tags';
  [[localCategory(r.category),'tag-category'],[localLevel(r.level),'tag-level'],[localCost(r.cost),'tag-cost'],[localScript(r.script),'tag-script']].forEach(([v,c])=>{const s=document.createElement('span');s.className=c;s.textContent=v;tags.append(s);});
- const status=document.createElement('span');status.className='verification';status.textContent=r.checkedAt?'✓ '+r.checkedAt:ui.candidate;tags.append(status);
+ const status=document.createElement('span');status.className='verification '+(r.status==='verified'?'verified':'pending');
+ if(r.status==='verified')status.textContent='✓ '+ui.verified;
+ else if(r.checkedAt)status.textContent='✓ '+ui.checked+' · '+r.checkedAt;
+ else status.textContent='! '+ui.candidate;
+ tags.append(status);
  body.append(tags);
+ const reasons=recommendationReasons(r,kind);
+ if(reasons.length){
+  const wrap=document.createElement('div');wrap.className='recommendation-reasons';
+  const title=document.createElement('span');title.className='recommendation-reasons-title';title.textContent=ui.reasonsTitle;wrap.append(title);
+  const list=document.createElement('ul');reasons.forEach(reason=>{const li=document.createElement('li');li.textContent=reason;list.append(li)});wrap.append(list);body.append(wrap);
+ }
  const a=document.createElement('a');a.href=r.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=ui.link;body.append(a);
  card.append(body);return card;
 }
@@ -165,7 +186,7 @@ function setLocale(code){
  qs('.hero h1').textContent=ui.hero[0];qs('.hero-en').textContent='';qs('.hero-intro').textContent=ui.hero[1];qs('.hero-sub').textContent=ui.hero[2];qs('.hero-primary').textContent=ui.hero[3];qs('.hero-secondary').textContent=ui.hero[4];qs('.hero-proof-label').textContent=' '+ui.categories;
  qs('#goals h2').textContent=ui.goalTitle;qs('#goals .section-intro').textContent=ui.goalIntro;
  qs('#learningPath h2').textContent=ui.pathTitle;qs('.learning-path-intro').textContent=ui.pathIntro;
- qs('#resources h2').textContent=ui.resourceTitle;qs('.resource-section-intro').textContent=ui.resourceIntro;qs('.resource-more-link').textContent=ui.viewAll+' →';
+ qs('#resources h2').textContent=ui.resourceTitle;qs('.resource-section-intro').textContent=ui.resourceIntro;qs('.resource-more-link').textContent=ui.viewAll+' →';qs('.legend-verified-label').textContent=ui.verifiedLegend;qs('.legend-pending-label').textContent=ui.pendingLegend;
  qs('#directory h2').textContent=ui.categories;qs('#directory .section-link').textContent=ui.viewAll+' →';
  qsAll('.category-tile').forEach(el=>el.querySelector('.tile-title').textContent=localCategory(el.dataset.category));
  qs('#features h2').textContent=ui.featuresTitle;qs('#gap h2').textContent=ui.gapTitle;qs('#gapIntro').textContent=ui.gapIntro;qs('#gapAction').textContent=ui.gapAction;
