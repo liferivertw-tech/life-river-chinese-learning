@@ -6,6 +6,7 @@ import {homepageFlow,flowLocales as homepageLocales} from './homepage-flow-i18n.
 import {learningPath} from './learning-path.js';
 import {coverageSummary} from './coverage-matrix.js';
 import {renderShell} from './ui-shell.js';
+import {onboardingI18n} from './onboarding-i18n.js';
 
 const langs=[['zh-TW','繁體中文'],['en','English'],['vi','Tiếng Việt'],['id','Bahasa Indonesia'],['th','ไทย'],['fil','Filipino'],['ja','日本語'],['ko','한국어'],['my','မြန်မာ'],['km','ភាសាខ្មែរ'],['ms','Bahasa Melayu'],['hi','हिन्दी'],['fr','Français'],['es','Español'],['de','Deutsch']];
 const goalMap={zero:['sound'],daily:['taiwan'],speaking:['skills'],literacy:['characters','reading'],taiwan:['taiwan'],work:['work-study'],traditional:['traditional'],tocfl:['tocfl']};
@@ -143,7 +144,7 @@ function renderResources(){
  }
 }
 function setLocale(code){
- currentLocale=code;ui=Object.assign({},homepageMessages(code),homepageFlow(code));document.documentElement.lang=code;document.title='LIFE RIVER · '+ui.categories;
+ currentLocale=code;ui=Object.assign({},homepageMessages(code),homepageFlow(code),onboardingI18n[code]||onboardingI18n.en);document.documentElement.lang=code;document.title='LIFE RIVER · '+ui.categories;
  [ui.navHome,ui.navCategories,ui.navFeatured,ui.navAbout].forEach((v,i)=>{const a=qsAll('.site-nav a')[i];if(a)a.textContent=v;});
  qs('.language-picker b').textContent=ui.langLabel||ui.lang||'Language';
  const brand=brandLabels[code]||brandLabels.en;qs('.hero-eyebrow').textContent=brand[0];qs('.brand-caption strong').textContent=brand[1];qs('.brand-caption small').textContent=ui.categories;qs('#siteFooter').textContent='© 2026 LIFE RIVER · '+brand[1]+' · BUILD 02';

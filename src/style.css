@@ -23,3 +23,9 @@
 .goal-start-body{margin:0}
 .goal-start-action{flex:0 0 auto;white-space:nowrap}
 @media(max-width:720px){.goal-start-panel{align-items:stretch;flex-direction:column}.goal-start-action{width:100%}}
+
+.start-guide{padding:30px;display:grid;grid-template-columns:minmax(220px,.8fr) 2fr;gap:24px;align-items:center;background:#eef6fb;border-bottom:1px solid #dce9f2}
+.start-guide-heading{padding:0 12px}.start-guide-kicker{display:block;margin-bottom:6px;color:#4f7da7;font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}.start-guide-title{margin:0;color:#193e64;font-size:24px}
+.start-guide-steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0;padding:0}.start-guide-steps li{display:flex;gap:10px;align-items:flex-start;padding:14px;border:1px solid #d9e6ef;border-radius:16px;background:#fff}.start-guide-steps li>span{display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:50%;background:#176bc4;color:#fff;font-weight:900;font-size:12px}.start-step-title{display:block;color:#204b70;font-size:13px}.start-step-body{margin:4px 0 0;color:#718494;font-size:11px;line-height:1.6}
+@media(max-width:900px){.start-guide{grid-template-columns:1fr}.start-guide-heading{text-align:center}.start-guide-steps{grid-template-columns:1fr}}
+@media(max-width:720px){.start-guide{padding:24px 18px}.start-guide-title{font-size:21px}.start-guide-steps{gap:9px}.start-guide-steps li{padding:12px}}
