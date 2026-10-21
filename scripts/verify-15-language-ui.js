@@ -125,6 +125,23 @@ async function checkLocale(page,locale,viewportName,viewport){
 
   const file=join(OUT_DIR,`${locale}-${viewportName}.png`);
   await page.screenshot({path:file,fullPage:false});
+  if(locale==='zh-TW' && viewportName==='desktop'){
+    await page.locator('#categoryFilter').selectOption('tocfl');
+    await page.locator('#levelFilter').selectOption('初級');
+    await page.locator('#lang').selectOption('th');
+    assert(await page.locator('#categoryFilter').inputValue()==='tocfl','locale switch reset category filter');
+    assert(await page.locator('#levelFilter').inputValue()==='初級','locale switch reset level filter');
+    await page.locator('#goalGrid .goal-card').first().click();
+    assert(await page.locator('#goalStartPanel').isVisible(),'learning goal did not reveal starting point');
+    assert(await page.locator('#goalGrid .goal-card').first().getAttribute('aria-pressed')==='true','goal selection was not announced');
+    await page.locator('#goalLevel').selectOption('中級');
+    assert(await page.locator('#goalLevel').inputValue()==='中級','goal level selection was reset');
+  }
+  if(locale==='th' && viewportName==='mobile'){
+    await page.locator('#menuToggle').click();
+    await page.locator('#mainNav a').first().click();
+    assert(await page.locator('#menuToggle').getAttribute('aria-expanded')==='false','mobile navigation did not collapse after selecting a link');
+  }
   return {locale,viewport:viewportName,...m};
 }
 
