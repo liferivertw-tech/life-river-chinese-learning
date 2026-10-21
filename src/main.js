@@ -78,7 +78,7 @@ function recommendationReasons(r,kind){
 }
 function renderResourceCard(r,kind){
  const card=document.createElement('article');card.className='resource-card';
- const badge=document.createElement('span');badge.className='resource-badge '+(kind==='native'?'native':'english');badge.textContent=kind==='native'?ui.nativeBadge:ui.englishBadge;card.append(badge);
+ const badge=document.createElement('span');badge.className='resource-badge '+(kind==='native'?'native':kind==='english'?'english':'other');badge.textContent=kind==='native'?ui.nativeBadge:kind==='english'?ui.englishBadge:ui.other;card.append(badge);
  const body=document.createElement('div');body.className='resource-card-body';
  const h=document.createElement('h3');h.textContent=r.title;body.append(h);
  const provider=document.createElement('p');provider.className='provider';provider.textContent=r.provider;body.append(provider);
@@ -123,7 +123,7 @@ function renderGoals(){
   const i=document.createElement('span');i.className='goal-icon';i.textContent=icon;b.append(i);
   const h=document.createElement('strong');h.textContent=ui.goals[goalEntries.findIndex(x=>x[0]===id)];b.append(h);
   const related=nodesForGoal(id)[0];const p=document.createElement('span');p.textContent=related?(ui.pathTitles&&ui.pathTitles[related.order-1]||related.title):'';b.append(p);
-  b.addEventListener('click',()=>{selectedGoal=id;renderGoals();renderPath();renderFeatured();const first=nodesForGoal(id)[0];if(first)qs('#path-'+first.id).scrollIntoView({behavior:'smooth',block:'center'});});
+  b.addEventListener('click',()=>{selectedGoal=id;renderGoals();renderPath();renderFeatured();qs('#goalStartPanel')?.scrollIntoView({behavior:'smooth',block:'nearest'});});
   grid.append(b);
  });
  const panel=qs('#goalStartPanel');
@@ -148,7 +148,7 @@ function renderPath(){
   const head=document.createElement('div');head.className='path-head';
   const num=document.createElement('span');num.className='path-number';num.textContent=String(node.order).padStart(2,'0');head.append(num);
   const icon=document.createElement('span');icon.className='path-icon';icon.textContent=node.icon;head.append(icon);
-  const levelTag=document.createElement('span');levelTag.className='path-level';levelTag.textContent=node.level;head.append(levelTag);card.append(head);
+  const levelTag=document.createElement('span');levelTag.className='path-level';levelTag.textContent=(ui.levels?.[node.level]||node.level);head.append(levelTag);card.append(head);
   const h=document.createElement('h3');h.textContent=ui.pathTitles&&ui.pathTitles[index]||node.title;card.append(h);
   const ul=document.createElement('ul');ul.className='path-goals';const goals=ui.pathGoals&&ui.pathGoals[index]||node.goals;goals.forEach(g=>{const li=document.createElement('li');li.textContent=g;ul.append(li)});card.append(ul);
   const meta=document.createElement('p');meta.className='path-resource-meta';
@@ -198,8 +198,10 @@ function setLocale(code){
  qs('#allResources h2').textContent=ui.resourceTitle;qs('#searchInput').placeholder=ui.placeholder;qs('.search-button').textContent=ui.search;qs('.quick-label').textContent='🔥 '+ui.popular;
  qsAll('.quick-links button').forEach((b,i)=>{b.textContent=ui.quick[i]||b.textContent;});
  const filterLabels=qsAll('.filters label span');filterLabels[0].textContent=ui.categoryFilter;filterLabels[1].textContent=ui.levelFilter;
+ const previousCategory=category.value,previousLevel=level.value;
  category.replaceChildren(new Option(ui.allCategories,''),...categories.map(([id])=>new Option(localCategory(id),id)));
  level.replaceChildren(new Option(ui.allLevels,''),...['入門','初級','中級','高級','多級'].map(v=>new Option(ui.levels[v]||v,v)));
+ category.value=previousCategory;level.value=previousLevel;
  qs('#clearFilters').textContent=ui.clear;qs('#about h2').textContent=ui.aboutTitle;qs('#about p:last-child').textContent=ui.aboutBody;qs('#notice').textContent=ui.notice;
  renderGoals();renderPath();renderFeatured();renderFeatures();renderGap();renderResources();langSelect.value=code;
 }
