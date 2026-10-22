@@ -8,7 +8,7 @@ test('Life Lingo signs up through real LifeOne Keycloak and returns to preserved
   const page = await context.newPage();
   try {
     await page.goto('http://127.0.0.1:4173/');
-    const signIn = page.getByRole('button', { name: /使用 LifeOne 登入/i });
+    const signIn = page.getByRole('button', { name: /使用 LifeOne.*登入/i });
     await signIn.waitFor({ state: 'visible' });
     await signIn.click();
     await page.waitForURL(/127\.0\.0\.1:18080\/realms\/life-lingo-e2e\/protocol\/openid-connect\/auth/);
