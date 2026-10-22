@@ -1,4 +1,5 @@
 import './style.css';
+import { mountLifeOneSignIn } from './auth/lifeone.js';
 import {catalog,categories} from './catalog.js';
 import {groupResources,matchResource} from './resource-ranking.js';
 import {homepageMessages} from './homepage-i18n.js';
@@ -32,6 +33,7 @@ const brandLabels={
  de:['LIFE RIVER · CHINESISCH-LERNZENTRUM','LIFE RIVER · Chinesisch-Lernzentrum']
 };
 renderShell(qs('#app'),categories);
+void mountLifeOneSignIn(qs('#app'));
 const langSelect=qs('#lang');
 langs.forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;langSelect.append(o);});
 const query=qs('#searchInput'),category=qs('#categoryFilter'),level=qs('#levelFilter'),results=qs('#resourceResults');
