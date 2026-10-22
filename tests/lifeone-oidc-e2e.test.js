@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 
-test('Life Lingo signs up through real LifeOne Keycloak and returns to preserved learning UI', { timeout: 90000 }, async () => {
+test('Life Lingo signs up through real LifeOne Keycloak and returns to preserved learning UI', { timeout: 90000, skip: process.env.RUN_LIFEONE_E2E !== '1' }, async () => {
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
