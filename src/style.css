@@ -52,3 +52,9 @@
 .resource-tags .verification.trust-a{background:#eaf7ee;color:#2d7448}
 .resource-tags .verification.trust-b{background:#fff5df;color:#8b6a13}
 .resource-tags .verification.trust-c{background:#eef2f5;color:#657681}
+
+
+.lifeone-signin-button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;margin:.75rem 0;padding:.7rem 1rem;border:1px solid #19735a;border-radius:999px;background:#19735a;color:#fff;font:inherit;font-weight:650;cursor:pointer;box-shadow:0 3px 12px rgba(15,80,61,.12)}
+.lifeone-signin-button:hover:not(:disabled){background:#125b47}
+.lifeone-signin-button:focus-visible{outline:3px solid #e3b85a;outline-offset:3px}
+.lifeone-signin-button:disabled{cursor:not-allowed;opacity:.65}
