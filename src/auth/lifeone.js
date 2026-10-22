@@ -56,11 +56,23 @@ export async function mountLifeOneSignIn(container) {
   button.className = 'lifeone-signin-button';
   button.textContent = '使用 LifeOne 登入';
   button.setAttribute('aria-label', '使用 LifeOne 統一帳號登入');
+  let authenticated = false;
+  const update = () => {
+    authenticated = Boolean(getLifeOneIdentity());
+    button.textContent = authenticated ? 'LifeOne 已登入 · 登出' : '使用 LifeOne 登入';
+    button.setAttribute('aria-label', authenticated ? 'LifeOne 已登入，按此登出' : '使用 LifeOne 統一帳號登入');
+  };
   button.addEventListener('click', async () => {
+    if (!configured) return;
     button.disabled = true;
-    try { await loginWithLifeOne(); }
-    catch { button.textContent = '登入暫時無法使用，請稍後再試'; }
-    finally { button.disabled = false; }
+    try {
+      if (authenticated) await logoutFromLifeOne();
+      else await loginWithLifeOne();
+    } catch {
+      button.textContent = authenticated ? '登出暫時無法使用' : '登入暫時無法使用，請稍後再試';
+    } finally {
+      button.disabled = false;
+    }
   });
   container.prepend(button);
   if (!configured) {
@@ -70,18 +82,7 @@ export async function mountLifeOneSignIn(container) {
   }
   try {
     await initializeLifeOne();
-    const identity = getLifeOneIdentity();
-    if (identity) {
-      button.textContent = '已登入 LifeOne';
-      button.setAttribute('aria-label', '已登入 LifeOne 統一帳號');
-      button.onclick = null;
-      button.addEventListener('click', async () => {
-        button.disabled = true;
-        try { await logoutFromLifeOne(); }
-        catch { button.textContent = '登出暫時無法使用'; }
-        finally { button.disabled = false; }
-      }, { once: true });
-    }
+    update();
   } catch {
     button.title = '無法連線至 LifeOne；學習內容仍可使用';
   }
