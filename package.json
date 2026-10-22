@@ -17,5 +17,8 @@
   "devDependencies": {
     "playwright": "^1.64.1",
     "vite": "^6.3.0"
+  },
+  "dependencies": {
+    "keycloak-js": "26.2.0"
   }
 }
