@@ -82,7 +82,7 @@ jobs:
           echo "E2E_USERNAME=life-lingo-$GITHUB_RUN_ID" >> "$GITHUB_ENV"
           echo "E2E_PASSWORD=$(openssl rand -hex 24)" >> "$GITHUB_ENV"
           echo "E2E_EMAIL=life-lingo-$GITHUB_RUN_ID@example.invalid" >> "$GITHUB_ENV"
-          npm run test:lifeone-e2e
+          RUN_LIFEONE_E2E=1 npm run test:lifeone-e2e
       - name: Cleanup
         if: always()
         shell: bash
