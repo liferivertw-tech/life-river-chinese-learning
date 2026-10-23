@@ -79,9 +79,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo "E2E_USERNAME=life-lingo-$GITHUB_RUN_ID" >> "$GITHUB_ENV"
-          echo "E2E_PASSWORD=$(openssl rand -hex 24)" >> "$GITHUB_ENV"
-          echo "E2E_EMAIL=life-lingo-$GITHUB_RUN_ID@example.invalid" >> "$GITHUB_ENV"
+          export E2E_USERNAME="life-lingo-$GITHUB_RUN_ID"
+          export E2E_PASSWORD="$(openssl rand -hex 24)"
+          export E2E_EMAIL="life-lingo-$GITHUB_RUN_ID@example.invalid"
+          echo "::add-mask::$E2E_PASSWORD"
           RUN_LIFEONE_E2E=1 npm run test:lifeone-e2e
       - name: Cleanup
         if: always()
