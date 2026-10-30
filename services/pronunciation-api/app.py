@@ -23,7 +23,7 @@ def health():
 
 @app.get("/api/pronunciation", response_model=PronunciationResponse)
 def get_pronunciation(text: str = Query(..., min_length=1, max_length=100)):
-    if not any("\\u3400" <= ch <= "\\u9fff" for ch in text):
+    if not any(0x3400 <= ord(ch) <= 0x9FFF for ch in text):
         raise HTTPException(status_code=422, detail="請至少輸入一個中文字。")
     try:
         py = [item[0] for item in pinyin(text, style=Style.TONE, heteronym=False, strict=False)]
