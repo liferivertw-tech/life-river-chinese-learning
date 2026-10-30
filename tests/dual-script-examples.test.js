@@ -1,26 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {exampleDisplayMode,presentExample,examplePreview,LEARNING_SCRIPT} from '../src/dual-script-examples.js';
-
 test('Taiwan Traditional Chinese is the learning target',()=>assert.equal(LEARNING_SCRIPT,'zh-Hant-TW'));
-test('non-Chinese and Simplified Chinese native learners see both scripts by default',()=>{
- for(const locale of ['en','vi','th','zh-CN']){
-  const view=presentExample(examplePreview[0],{nativeLocale:locale});
-  assert.equal(view.traditional,examplePreview[0].traditional);
-  assert.equal(view.simplified,examplePreview[0].simplified);
- }
-});
-test('Traditional Chinese native learner defaults to Traditional text',()=>{
- const view=presentExample(examplePreview[0],{nativeLocale:'zh-TW'});
- assert.equal(view.simplified,null);assert.ok(view.traditional);
-});
-test('display choice never changes the underlying primary teaching target',()=>{
- const view=presentExample(examplePreview[0],{nativeLocale:'en',mode:'simplified'});
- assert.equal(view.target,'zh-Hant-TW');assert.equal(view.traditional,null);
- assert.ok(view.simplified);
-});
-test('translations are not invented when absent',()=>{
- const view=presentExample(examplePreview[0],{nativeLocale:'th'});
- assert.equal(view.translationAvailable,false);assert.equal(view.translation,null);
-});
+test('non-Chinese and Simplified Chinese native learners see both scripts by default',()=>{for(const locale of ['en','vi','th','zh-CN']){const view=presentExample(examplePreview[0],{nativeLocale:locale});assert.equal(view.traditional,examplePreview[0].traditional);assert.equal(view.simplified,examplePreview[0].simplified);}});
+test('Traditional Chinese native learner defaults to Traditional text',()=>{const view=presentExample(examplePreview[0],{nativeLocale:'zh-TW'});assert.equal(view.simplified,null);assert.ok(view.traditional);});
+test('display choice never changes the underlying primary teaching target',()=>{const view=presentExample(examplePreview[0],{nativeLocale:'en',mode:'simplified'});assert.equal(view.target,'zh-Hant-TW');assert.equal(view.traditional,null);assert.ok(view.simplified);});
+test('translations are not invented when absent',()=>{const view=presentExample(examplePreview[0],{nativeLocale:'th'});assert.equal(view.translationAvailable,false);assert.equal(view.translation,null);});
 test('missing reviewed script text is rejected',()=>assert.throws(()=>presentExample({traditional:'學習'}),TypeError));
+test('Pinyin is retained independently from script visibility',()=>{const view=presentExample(examplePreview[0],{nativeLocale:'en',mode:'simplified'});assert.equal(view.pinyin,examplePreview[0].pinyin);});
+test('unknown display mode falls back according to native locale',()=>{assert.equal(exampleDisplayMode('zh-TW','invalid'),'traditional');assert.equal(exampleDisplayMode('en','invalid'),'both');});
