@@ -8,12 +8,14 @@ import {coverageSummary} from './coverage-matrix.js';
 import {renderShell} from './ui-shell.js';
 import {onboardingI18n} from './onboarding-i18n.js';
 import {recommendationI18n} from './recommendation-i18n.js';
+import {loadPreferences,savePreferences,defaultsForNativeLanguage,preferenceOptions} from './learner-preferences.js';
 
-const langs=[['zh-TW','繁體中文'],['en','English'],['vi','Tiếng Việt'],['id','Bahasa Indonesia'],['th','ไทย'],['fil','Filipino'],['ja','日本語'],['ko','한국어'],['my','မြန်မာ'],['km','ភាសាខ្មែរ'],['ms','Bahasa Melayu'],['hi','हिन्दी'],['fr','Français'],['es','Español'],['de','Deutsch']];
+const langs=[['zh-TW','繁體中文'],['zh-CN','简体中文（中国大陆）'],['en','English'],['vi','Tiếng Việt'],['id','Bahasa Indonesia'],['th','ไทย'],['fil','Filipino'],['ja','日本語'],['ko','한국어'],['my','မြန်မာ'],['km','ភាសាខ្មែរ'],['ms','Bahasa Melayu'],['hi','हिन्दी'],['fr','Français'],['es','Español'],['de','Deutsch']];
 const goalMap={zero:['sound'],daily:['taiwan'],speaking:['skills'],literacy:['characters','reading'],taiwan:['taiwan'],work:['work-study'],traditional:['traditional'],tocfl:['tocfl']};
 const goalEntries=[['zero','🧭'],['daily','🛍️'],['speaking','🎧'],['literacy','📚'],['taiwan','🏮'],['work','💼'],['traditional','ㄅ'],['tocfl','🎓']];
 const qs=s=>document.querySelector(s),qsAll=s=>document.querySelectorAll(s);
 let currentLocale='zh-TW',ui={},selectedGoal=null,selectedLevel='入門';
+let learnerPreferences=loadPreferences(globalThis.localStorage);
 const brandLabels={
  'zh-TW':['LIFE RIVER · 中文學習資源網','生命河｜中文學習資源網'],
  en:['LIFE RIVER · CHINESE LEARNING HUB','LIFE RIVER · Chinese Learning Hub'],
@@ -181,6 +183,7 @@ function renderResources(){
   g.other.forEach(r=>grid.append(renderResourceCard(r,'other')));details.append(grid);results.append(details);
  }
 }
+function renderLearnerPreferences(){const labels=ui.preferenceLabels||{native:'母语',script:'学习字形',phonetic:'发音标记'};const native=qs('#nativeLanguage'),script=qs('#targetScript'),phonetic=qs('#phoneticSystem');native.replaceChildren(...preferenceOptions.nativeLanguage.map(([v,t])=>new Option(t,v)));script.replaceChildren(new Option(ui.scriptTraditional||'繁體中文','traditional'),new Option(ui.scriptSimplified||'简体中文','simplified'),new Option(ui.scriptBoth||'繁簡對照','both'));phonetic.replaceChildren(new Option(ui.phoneticZhuyin||'注音符號','zhuyin'),new Option(ui.phoneticPinyin||'漢語拼音','pinyin'),new Option(ui.phoneticNone||'不顯示','none'));qs('#nativeLanguageLabel').textContent=labels.native;qs('#targetScriptLabel').textContent=labels.script;qs('#phoneticSystemLabel').textContent=labels.phonetic;native.value=learnerPreferences.nativeLanguage;script.value=learnerPreferences.targetScript;phonetic.value=learnerPreferences.phoneticSystem;}
 function setLocale(code){
  currentLocale=code;ui=Object.assign({},homepageMessages(code),homepageFlow(code),onboardingI18n[code]||onboardingI18n.en,recommendationI18n[code]||recommendationI18n.en);document.documentElement.lang=code;document.title='LIFE RIVER · '+ui.categories;
  [ui.navHome,ui.navCategories,ui.navFeatured,ui.navAbout].forEach((v,i)=>{const a=qsAll('.site-nav a')[i];if(a)a.textContent=v;});
@@ -203,7 +206,7 @@ function setLocale(code){
  level.replaceChildren(new Option(ui.allLevels,''),...['入門','初級','中級','高級','多級'].map(v=>new Option(ui.levels[v]||v,v)));
  category.value=previousCategory;level.value=previousLevel;
  qs('#clearFilters').textContent=ui.clear;qs('#about h2').textContent=ui.aboutTitle;qs('#about p:last-child').textContent=ui.aboutBody;qs('#notice').textContent=ui.notice;
- renderGoals();renderPath();renderFeatured();renderFeatures();renderGap();renderResources();langSelect.value=code;
+ renderGoals();renderPath();renderFeatured();renderFeatures();renderGap();renderResources();renderLearnerPreferences();langSelect.value=code;
 }
 qs('#searchForm').addEventListener('submit',e=>{e.preventDefault();renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});});
 query.addEventListener('input',renderResources);category.addEventListener('change',renderResources);level.addEventListener('change',renderResources);
@@ -213,6 +216,7 @@ qsAll('.category-tile').forEach(b=>b.addEventListener('click',()=>{category.valu
 qsAll('.quick-links button').forEach(b=>b.addEventListener('click',()=>{const cat=b.dataset.category;if(cat){category.value=cat;query.value='';}else query.value=b.dataset.query||'';renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});}));
 qs('#menuToggle').addEventListener('click',()=>{const open=qs('#menuToggle').getAttribute('aria-expanded')!=='true';qs('#menuToggle').setAttribute('aria-expanded',String(open));qs('#mainNav').classList.toggle('open',open);qs('#menuToggle').setAttribute('aria-label',open?(ui.menuClose||'Close menu'):(ui.menuOpen||'Open menu'));});
 qsAll('#mainNav a').forEach(link=>link.addEventListener('click',()=>{qs('#mainNav').classList.remove('open');qs('#menuToggle').setAttribute('aria-expanded','false');qs('#menuToggle').setAttribute('aria-label',ui.menuOpen||'Open menu');}));
-langSelect.addEventListener('change',e=>{try{localStorage.setItem('lr-chinese-locale',e.target.value)}catch{}setLocale(e.target.value);});
+langSelect.addEventListener('change',e=>{try{localStorage.setItem('lr-chinese-locale',e.target.value)}catch{}learnerPreferences=savePreferences(globalThis.localStorage,{...learnerPreferences,interfaceLanguage:e.target.value});setLocale(e.target.value);});
+['nativeLanguage','targetScript','phoneticSystem'].forEach(id=>qs('#'+id).addEventListener('change',e=>{if(id==='nativeLanguage')learnerPreferences=defaultsForNativeLanguage(e.target.value);else learnerPreferences={...learnerPreferences,[id]:e.target.value};learnerPreferences=savePreferences(globalThis.localStorage,learnerPreferences);renderLearnerPreferences();}));
 try{const saved=localStorage.getItem('lr-chinese-locale');if(saved&&homepageLocales.includes(saved))currentLocale=saved;}catch{}
 setLocale(currentLocale);
