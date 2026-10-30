@@ -8,7 +8,7 @@ import {homepageFlow,flowLocales} from '../src/homepage-flow-i18n.js';
 
 const PORT=4173;
 const BASE_URL=`http://127.0.0.1:${PORT}`;
-const OUT_DIR=join(process.cwd(),'artifacts','visual-15-language');
+const OUT_DIR=join(process.cwd(),'artifacts','build-11-homepage-qa');
 const LOCALES=flowLocales;
 const DESKTOP={width:1440,height:900};
 const MOBILE={width:390,height:844};
@@ -46,6 +46,12 @@ async function metrics(page){
     languageCount:document.querySelectorAll('#lang option').length,
     preferenceControls:['#nativeLanguage','#targetScript','#phoneticSystem'].every(s=>!!document.querySelector(s)),
     nativeLanguageOptionCount:document.querySelectorAll('#nativeLanguage option').length,
+    targetScriptOptionCount:document.querySelectorAll('#targetScript option').length,
+    phoneticOptionCount:document.querySelectorAll('#phoneticSystem option').length,
+    spokenVarietyOptionCount:document.querySelectorAll('#spokenVariety option').length,
+    exampleCardCount:document.querySelectorAll('#exampleCards .example-card').length,
+    strokeCharacterCount:document.querySelectorAll('[data-stroke-char]').length,
+    homepageModules:['exampleLab','strokePractice','openccLab','dictionaryLab','speechRecognition','tonePractice','photoOcr','regionalLanguageLab'].every(id=>!!document.getElementById(id)),
     logoLoaded:!!document.querySelector('.brand-logo')?.complete && (document.querySelector('.brand-logo')?.naturalWidth ?? 0)>0,
     menuVisible:getComputedStyle(document.querySelector('#mainNav')).display!=='none',
     menuToggleVisible:getComputedStyle(document.querySelector('#menuToggle')).display!=='none',
@@ -104,7 +110,14 @@ async function checkLocale(page,locale,viewportName,viewport){
   assert(m.categoryCount===12,`${locale}/${viewportName}: expected 12 category tiles`);
   assert(m.pathCount===8,`${locale}/${viewportName}: expected 8 path cards`);
   assert(m.goalCount===8,`${locale}/${viewportName}: expected 8 goal cards`);
-  assert(m.languageCount===16,`${locale}/${viewportName}: expected 15 language options`);
+  assert(m.languageCount===16,`${locale}/${viewportName}: expected 16 language options`);
+  assert(m.preferenceControls,`${locale}/${viewportName}: learner preference controls missing`);
+  assert(m.nativeLanguageOptionCount===16,`${locale}/${viewportName}: expected 16 native language options`);
+  assert(m.targetScriptOptionCount===3 && m.phoneticOptionCount===3,`${locale}/${viewportName}: script/phonetic options incomplete`);
+  assert(m.spokenVarietyOptionCount===6,`${locale}/${viewportName}: Taiwan language variety options incomplete`);
+  assert(m.exampleCardCount===2,`${locale}/${viewportName}: dual-script example cards missing`);
+  assert(m.strokeCharacterCount===3,`${locale}/${viewportName}: stroke practice characters missing`);
+  assert(m.homepageModules,`${locale}/${viewportName}: homepage learning module missing`);
   assert(m.logoLoaded,`${locale}/${viewportName}: brand logo did not load`);
   if(viewportName==='mobile'){
     assert(m.menuToggleVisible,`${locale}/mobile: menu toggle is hidden`);
@@ -128,6 +141,23 @@ async function checkLocale(page,locale,viewportName,viewport){
   const file=join(OUT_DIR,`${locale}-${viewportName}.png`);
   await page.screenshot({path:file,fullPage:false});
   if(locale==='zh-TW' && viewportName==='desktop'){
+    await page.locator('#nativeLanguage').selectOption('zh-CN');
+    assert(await page.locator('#targetScript').inputValue()==='both','Simplified Chinese native learner should default to dual-script mode');
+    assert(await page.locator('#phoneticSystem').inputValue()==='pinyin','Simplified Chinese native learner should default to Pinyin');
+    await page.locator('#targetScript').selectOption('traditional');
+    assert(await page.locator('#exampleCards .simplified').count()===0,'Traditional-only preference did not hide Simplified examples');
+    await page.locator('#targetScript').selectOption('both');
+    await page.locator('#spokenVariety').selectOption('hakka-hailu');
+    assert(await page.locator('#spokenVariety').inputValue()==='hakka-hailu','spoken variety preference did not persist in control');
+    await page.locator('#conversionInput').fill('我想买一张车票。');
+    await page.locator('#convertToTraditional').click();
+    assert(await page.locator('#conversionOutput').textContent()==='我想買一張車票。','OpenCC Traditional conversion failed');
+    await page.locator('#convertToSimplified').click();
+    assert(await page.locator('#conversionOutput').textContent()==='我想买一张车票。','OpenCC Simplified conversion failed');
+    await page.locator('#speechRate').fill('0.7');
+    assert((await page.locator('#speechRateValue').textContent()).includes('0.7'),'speech rate slider did not update');
+    await page.locator('[data-stroke-char="中"]').click();
+    assert(await page.locator('[data-stroke-char="中"]').getAttribute('class')==='selected','stroke character selection did not update');
     await page.locator('#categoryFilter').selectOption('tocfl');
     await page.locator('#levelFilter').selectOption('初級');
     await page.locator('#lang').selectOption('th');
@@ -158,7 +188,7 @@ try{
     results.push(await checkLocale(page,locale,'mobile',MOBILE));
   }
   const report={
-    build:'BUILD 09',
+    build:'BUILD 11',
     generatedAt:new Date().toISOString(),
     baseUrl:BASE_URL,
     locales:LOCALES,
@@ -166,7 +196,7 @@ try{
     checks:results
   };
   writeFileSync(join(OUT_DIR,'report.json'),JSON.stringify(report,null,2));
-  console.log(`BUILD 05 visual QA passed: ${LOCALES.length} languages × 2 viewports = ${results.length} renders.`);
+  console.log(`BUILD 11 homepage QA passed: ${LOCALES.length} languages × 2 viewports = ${results.length} renders.`);
 }finally{
   await browser.close();
   server.kill('SIGTERM');
