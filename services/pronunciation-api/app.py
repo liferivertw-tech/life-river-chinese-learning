@@ -1,5 +1,5 @@
 from __future__ import annotations
-import os\nimport tempfile\nfrom pathlib import Path\nimport parselmouth\nfrom .tone_assessment import score_tone_contour
+import os\nimport tempfile\nfrom pathlib import Path\nimport parselmouth\nfrom tone_assessment import score_tone_contour
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
