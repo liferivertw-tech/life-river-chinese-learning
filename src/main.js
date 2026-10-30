@@ -18,6 +18,7 @@ let currentLocale='zh-TW',ui={},selectedGoal=null,selectedLevel='入門';
 let learnerPreferences=loadPreferences(globalThis.localStorage);
 const brandLabels={
  'zh-TW':['LIFE RIVER · 中文學習資源網','生命河｜中文學習資源網'],
+ 'zh-CN':['LIFE RIVER · 中文学习资源网','生命河｜中文学习资源网'],
  en:['LIFE RIVER · CHINESE LEARNING HUB','LIFE RIVER · Chinese Learning Hub'],
  vi:['LIFE RIVER · TRUNG TÂM HỌC TIẾNG TRUNG','LIFE RIVER · Trung tâm học tiếng Trung'],
  id:['LIFE RIVER · PUSAT BELAJAR MANDARIN','LIFE RIVER · Pusat Belajar Mandarin'],
