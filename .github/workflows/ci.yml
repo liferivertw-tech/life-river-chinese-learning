@@ -3,10 +3,11 @@ on:
   push:
     branches: [main, 'codex/**']
   pull_request:
-    branches: [main]
+    branches: [main, 'codex/**']
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v7
@@ -15,3 +16,11 @@ jobs:
       - run: npm install
       - run: npm test
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run verify:visual
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-11-homepage-visual-qa
+          path: artifacts/build-11-homepage-qa/
+          if-no-files-found: ignore
