@@ -8,7 +8,7 @@ import {homepageFlow,flowLocales} from '../src/homepage-flow-i18n.js';
 
 const PORT=4173;
 const BASE_URL=`http://127.0.0.1:${PORT}`;
-const OUT_DIR=join(process.cwd(),'artifacts','visual-15-language');
+const OUT_DIR=join(process.cwd(),'artifacts','visual-16-language');
 const LOCALES=flowLocales;
 const DESKTOP={width:1440,height:900};
 const MOBILE={width:390,height:844};
@@ -104,7 +104,7 @@ async function checkLocale(page,locale,viewportName,viewport){
   assert(m.categoryCount===12,`${locale}/${viewportName}: expected 12 category tiles`);
   assert(m.pathCount===8,`${locale}/${viewportName}: expected 8 path cards`);
   assert(m.goalCount===8,`${locale}/${viewportName}: expected 8 goal cards`);
-  assert(m.languageCount===16,`${locale}/${viewportName}: expected 15 language options`);
+  assert(m.languageCount===16,`${locale}/${viewportName}: expected 16 language options`);
   assert(m.logoLoaded,`${locale}/${viewportName}: brand logo did not load`);
   if(viewportName==='mobile'){
     assert(m.menuToggleVisible,`${locale}/mobile: menu toggle is hidden`);
@@ -158,7 +158,7 @@ try{
     results.push(await checkLocale(page,locale,'mobile',MOBILE));
   }
   const report={
-    build:'BUILD 09',
+    build:'BUILD 11',
     generatedAt:new Date().toISOString(),
     baseUrl:BASE_URL,
     locales:LOCALES,
@@ -166,7 +166,7 @@ try{
     checks:results
   };
   writeFileSync(join(OUT_DIR,'report.json'),JSON.stringify(report,null,2));
-  console.log(`BUILD 05 visual QA passed: ${LOCALES.length} languages × 2 viewports = ${results.length} renders.`);
+  console.log(`BUILD 11 visual QA passed: ${LOCALES.length} languages × 2 viewports = ${results.length} renders.`);
 }finally{
   await browser.close();
   server.kill('SIGTERM');
