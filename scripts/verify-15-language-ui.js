@@ -114,7 +114,7 @@ async function checkLocale(page,locale,viewportName,viewport){
   assert(m.preferenceControls,`${locale}/${viewportName}: learner preference controls missing`);
   assert(m.nativeLanguageOptionCount===16,`${locale}/${viewportName}: expected 16 native language options`);
   assert(m.targetScriptOptionCount===3 && m.phoneticOptionCount===3,`${locale}/${viewportName}: script/phonetic options incomplete`);
-  assert(m.spokenVarietyOptionCount===6,`${locale}/${viewportName}: Taiwan language variety options incomplete`);
+  assert(m.spokenVarietyOptionCount===2,`${locale}/${viewportName}: Taiwan Mandarin options incomplete`);
   assert(m.exampleCardCount===2,`${locale}/${viewportName}: dual-script example cards missing`);
   assert(m.strokeCharacterCount===3,`${locale}/${viewportName}: stroke practice characters missing`);
   assert(m.homepageModules,`${locale}/${viewportName}: homepage learning module missing`);
@@ -147,8 +147,8 @@ async function checkLocale(page,locale,viewportName,viewport){
     await page.locator('#targetScript').selectOption('traditional');
     assert(await page.locator('#exampleCards .simplified').count()===0,'Traditional-only preference did not hide Simplified examples');
     await page.locator('#targetScript').selectOption('both');
-    await page.locator('#spokenVariety').selectOption('hakka-hailu');
-    assert(await page.locator('#spokenVariety').inputValue()==='hakka-hailu','spoken variety preference did not persist in control');
+    await page.locator('#spokenVariety').selectOption('mandarin-regional');
+    assert(await page.locator('#spokenVariety').inputValue()==='mandarin-regional','Taiwan Mandarin preference did not persist in control');
     await page.locator('#conversionInput').fill('我想买一张车票。');
     await page.locator('#convertToTraditional').click();
     assert(await page.locator('#conversionOutput').textContent()==='我想買一張車票。','OpenCC Traditional conversion failed');
