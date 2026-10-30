@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {taiwanLanguageVarieties,taiwanSpeechSources,speechRightsRules} from '../src/taiwan-language-resources.js';
-test('Taiwan Mandarin, Taiwanese and Hakka varieties are separately represented',()=>{for(const id of ['mandarin-standard','mandarin-regional','taiwanese-hokkien','hakka-sixian','hakka-hailu','hakka-other'])assert.ok(taiwanLanguageVarieties.some(x=>x.id===id));});
-test('speech sources have explicit access and rights states',()=>{for(const source of taiwanSpeechSources){assert.ok(source.license,source.id);assert.ok(source.access,source.id);assert.ok(source.commercial,source.id);assert.ok(source.status,source.id);assert.ok(source.url,source.id);}});
-test('restricted corpora are not presented as open download',()=>{for(const id of ['hakka-speech-db','naer-taiwanese-corpus','sinica-taiwan-mandarin']){const item=taiwanSpeechSources.find(x=>x.id===id);assert.notEqual(item.status,'usable-with-conditions');}});
+test('only Taiwan Mandarin varieties are in this product scope',()=>{assert.deepEqual(taiwanLanguageVarieties.map(x=>x.id),['mandarin-standard','mandarin-regional']);});
+test('speech sources cover standard and regional Taiwan Mandarin only',()=>{assert.deepEqual(new Set(taiwanSpeechSources.map(x=>x.variety)),new Set(['mandarin-standard','mandarin-regional']));for(const source of taiwanSpeechSources){assert.ok(source.license);assert.ok(source.access);assert.ok(source.commercial);assert.ok(source.status);assert.ok(source.url);}});
+test('restricted corpora are not presented as open download',()=>{assert.notEqual(taiwanSpeechSources.find(x=>x.id==='sinica-taiwan-mandarin').status,'usable-with-conditions');});
 test('rights safeguards are explicit',()=>assert.ok(speechRightsRules.length>=4));
