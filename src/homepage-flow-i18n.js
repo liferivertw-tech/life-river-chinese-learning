@@ -90,7 +90,7 @@ const goalStartByLocale={
 'fr':{title:'Votre point de départ',body:(g,p)=>'Pour l’objectif « '+g+' », nous vous conseillons de commencer par « '+p+' ».',action:'Voir le point de départ'},
 'es':{title:'Tu punto de partida',body:(g,p)=>'Para el objetivo « '+g+' », recomendamos empezar por « '+p+' ».',action:'Ver el punto de partida'},
 'de':{title:'Dein Startpunkt',body:(g,p)=>'Für das Ziel „'+g+'“ empfehlen wir, mit „'+p+'“ zu beginnen.',action:'Startpunkt ansehen'}};
-for(const locale of flowLocales){const s=goalStartByLocale[locale]||goalStartByLocale.en;flowI18n[locale].goalStartTitle=s.title;flowI18n[locale].goalStart=s.body;flowI18n[locale].goalStartAction=s.action;}
+for(const locale of flowLocales){flowI18n[locale] ||= {...flowI18n.en};const s=goalStartByLocale[locale]||goalStartByLocale.en;flowI18n[locale].goalStartTitle=s.title;flowI18n[locale].goalStart=s.body;flowI18n[locale].goalStartAction=s.action;}
 
 const summaryPendingByLocale={
 'zh-TW':'資源說明目前以中文提供。','en':'Resource description pending translation.','vi':'Mô tả tài nguyên đang chờ bản dịch.','id':'Deskripsi sumber sedang menunggu terjemahan.','th':'คำอธิบายทรัพยากรกำลังรอการแปล','fil':'Naghihintay ng salin ang paglalarawan ng resource.','ja':'リソースの説明は翻訳待ちです。','ko':'자료 설명은 번역을 기다리고 있습니다.','my':'အရင်းအမြစ်ဖော်ပြချက်သည် ဘာသာပြန်ရန် စောင့်ဆိုင်းနေပါသည်။','km':'ការពិពណ៌នាធនធានកំពុងរង់ចាំការបកប្រែ។','ms':'Penerangan sumber sedang menunggu terjemahan.','hi':'संसाधन का विवरण अनुवाद की प्रतीक्षा में है।','fr':'La description de la ressource est en attente de traduction.','es':'La descripción del recurso está pendiente de traducción.','de':'Die Ressourcenbeschreibung wartet auf eine Übersetzung.'};
