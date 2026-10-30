@@ -154,7 +154,7 @@ async function checkLocale(page,locale,viewportName,viewport){
     assert(await page.locator('#conversionOutput').textContent()==='我想買一張車票。','OpenCC Traditional conversion failed');
     await page.locator('#convertToSimplified').click();
     assert(await page.locator('#conversionOutput').textContent()==='我想买一张车票。','OpenCC Simplified conversion failed');
-    await page.locator('#speechRate').fill('0.7');
+    await page.locator('#speechRate').evaluate(el=>{el.value='0.7';el.dispatchEvent(new Event('input',{bubbles:true}));});
     assert((await page.locator('#speechRateValue').textContent()).includes('0.7'),'speech rate slider did not update');
     await page.locator('[data-stroke-char="中"]').click();
     assert(await page.locator('[data-stroke-char="中"]').getAttribute('class')==='selected','stroke character selection did not update');
