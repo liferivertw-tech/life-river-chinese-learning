@@ -12,7 +12,8 @@
     "queue:build": "node scripts/build-review-queue.js",
     "discover": "node scripts/discover-resources.js",
     "verify:queue": "node scripts/verify-review-queue.js",
-    "verify:visual": "node scripts/verify-15-language-ui.js"
+    "verify:visual": "node scripts/verify-15-language-ui.js",
+    "audit:technology": "node scripts/audit-technology-registry.js"
   },
   "devDependencies": {
     "playwright": "^1.64.1",
