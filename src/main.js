@@ -78,7 +78,7 @@ function recommendationReasons(r,kind){
 }
 function renderResourceCard(r,kind){
  const card=document.createElement('article');card.className='resource-card';
- const badge=document.createElement('span');badge.className='resource-badge '+(kind==='native'?'native':'english');badge.textContent=kind==='native'?ui.nativeBadge:ui.englishBadge;card.append(badge);
+ const badge=document.createElement('span');badge.className='resource-badge '+(kind==='native'?'native':kind==='english'?'english':'other');badge.textContent=kind==='native'?ui.nativeBadge:kind==='english'?ui.englishBadge:ui.other;card.append(badge);
  const body=document.createElement('div');body.className='resource-card-body';
  const h=document.createElement('h3');h.textContent=r.title;body.append(h);
  const provider=document.createElement('p');provider.className='provider';provider.textContent=r.provider;body.append(provider);
@@ -123,7 +123,7 @@ function renderGoals(){
   const i=document.createElement('span');i.className='goal-icon';i.textContent=icon;b.append(i);
   const h=document.createElement('strong');h.textContent=ui.goals[goalEntries.findIndex(x=>x[0]===id)];b.append(h);
   const related=nodesForGoal(id)[0];const p=document.createElement('span');p.textContent=related?(ui.pathTitles&&ui.pathTitles[related.order-1]||related.title):'';b.append(p);
-  b.addEventListener('click',()=>{selectedGoal=id;renderGoals();renderPath();renderFeatured();const first=nodesForGoal(id)[0];if(first)qs('#path-'+first.id).scrollIntoView({behavior:'smooth',block:'center'});});
+  b.addEventListener('click',()=>{selectedGoal=id;renderGoals();renderPath();renderFeatured();qs('#goalStartPanel')?.scrollIntoView({behavior:'smooth',block:'nearest'});});
   grid.append(b);
  });
  const panel=qs('#goalStartPanel');
@@ -148,7 +148,7 @@ function renderPath(){
   const head=document.createElement('div');head.className='path-head';
   const num=document.createElement('span');num.className='path-number';num.textContent=String(node.order).padStart(2,'0');head.append(num);
   const icon=document.createElement('span');icon.className='path-icon';icon.textContent=node.icon;head.append(icon);
-  const levelTag=document.createElement('span');levelTag.className='path-level';levelTag.textContent=node.level;head.append(levelTag);card.append(head);
+  const levelTag=document.createElement('span');levelTag.className='path-level';levelTag.textContent=(ui.levels?.[node.level]||node.level);head.append(levelTag);card.append(head);
   const h=document.createElement('h3');h.textContent=ui.pathTitles&&ui.pathTitles[index]||node.title;card.append(h);
   const ul=document.createElement('ul');ul.className='path-goals';const goals=ui.pathGoals&&ui.pathGoals[index]||node.goals;goals.forEach(g=>{const li=document.createElement('li');li.textContent=g;ul.append(li)});card.append(ul);
   const meta=document.createElement('p');meta.className='path-resource-meta';
@@ -185,19 +185,23 @@ function setLocale(code){
  currentLocale=code;ui=Object.assign({},homepageMessages(code),homepageFlow(code),onboardingI18n[code]||onboardingI18n.en,recommendationI18n[code]||recommendationI18n.en);document.documentElement.lang=code;document.title='LIFE RIVER · '+ui.categories;
  [ui.navHome,ui.navCategories,ui.navFeatured,ui.navAbout].forEach((v,i)=>{const a=qsAll('.site-nav a')[i];if(a)a.textContent=v;});
  qs('.language-picker b').textContent=ui.langLabel||ui.lang||'Language';
- const brand=brandLabels[code]||brandLabels.en;qs('.hero-eyebrow').textContent=brand[0];qs('.brand-caption strong').textContent=brand[1];qs('.brand-caption small').textContent=ui.categories;qs('#siteFooter').textContent='© 2026 LIFE RIVER · '+brand[1]+' · BUILD 02';
+ langSelect.setAttribute('aria-label',ui.langLabel||ui.lang||'Language');
+ qs('#menuToggle').setAttribute('aria-label',qs('#menuToggle').getAttribute('aria-expanded')==='true'?(ui.menuClose||'Close menu'):(ui.menuOpen||'Open menu'));
+ const brand=brandLabels[code]||brandLabels.en;qs('.hero-eyebrow').textContent=brand[0];qs('.brand-caption strong').textContent=brand[1];qs('.brand-caption small').textContent=ui.categories;qs('#siteFooter').textContent='© 2026 LIFE RIVER · '+brand[1];
  qs('.hero h1').textContent=ui.hero[0];qs('.hero-en').textContent='';qs('.hero-intro').textContent=ui.hero[1];qs('.hero-sub').textContent=ui.hero[2];qs('.hero-primary').textContent=ui.hero[3];qs('.hero-secondary').textContent=ui.hero[4];qs('.hero-proof-label').textContent=' '+ui.categories;
  qs('#goals h2').textContent=ui.goalTitle;qs('#goals .section-intro').textContent=ui.goalIntro;
  qs('#learningPath h2').textContent=ui.pathTitle;qs('.learning-path-intro').textContent=ui.pathIntro;
- qs('#resources h2').textContent=ui.resourceTitle;qs('.resource-section-intro').textContent=ui.resourceIntro;qs('.resource-more-link').textContent=ui.viewAll+' →';qs('.trust-heading').textContent=ui.trustHeading;qs('.legend-verified-label').textContent=ui.trustALegend;qs('.legend-pending-label').textContent=ui.trustBCLabel;
+ qs('#resources h2').textContent=ui.resourceTitle;qs('.resource-section-intro').textContent=ui.resourceIntro;qs('.resource-more-link').textContent=ui.viewAll+' →';qs('.trust-heading').textContent=ui.trustHeading;qs('.legend-verified-label').textContent=ui.trustALegend;qs('.legend-pending-label').textContent=ui.trustBCLabel;qs('.trust-c-label').textContent=ui.trustC||ui.candidate||'';
  qs('#directory h2').textContent=ui.categories;qs('#directory .section-link').textContent=ui.viewAll+' →';
  qsAll('.category-tile').forEach(el=>el.querySelector('.tile-title').textContent=localCategory(el.dataset.category));
  qs('#features h2').textContent=ui.featuresTitle;qs('#gap h2').textContent=ui.gapTitle;qs('#gapIntro').textContent=ui.gapIntro;qs('#gapAction').textContent=ui.gapAction;
  qs('#allResources h2').textContent=ui.resourceTitle;qs('#searchInput').placeholder=ui.placeholder;qs('.search-button').textContent=ui.search;qs('.quick-label').textContent='🔥 '+ui.popular;
  qsAll('.quick-links button').forEach((b,i)=>{b.textContent=ui.quick[i]||b.textContent;});
  const filterLabels=qsAll('.filters label span');filterLabels[0].textContent=ui.categoryFilter;filterLabels[1].textContent=ui.levelFilter;
+ const previousCategory=category.value,previousLevel=level.value;
  category.replaceChildren(new Option(ui.allCategories,''),...categories.map(([id])=>new Option(localCategory(id),id)));
  level.replaceChildren(new Option(ui.allLevels,''),...['入門','初級','中級','高級','多級'].map(v=>new Option(ui.levels[v]||v,v)));
+ category.value=previousCategory;level.value=previousLevel;
  qs('#clearFilters').textContent=ui.clear;qs('#about h2').textContent=ui.aboutTitle;qs('#about p:last-child').textContent=ui.aboutBody;qs('#notice').textContent=ui.notice;
  renderGoals();renderPath();renderFeatured();renderFeatures();renderGap();renderResources();langSelect.value=code;
 }
@@ -207,7 +211,8 @@ qs('#goalLevel')?.addEventListener('change',e=>{selectedLevel=e.target.value||'�
 qs('#clearFilters').addEventListener('click',()=>{query.value='';category.value='';level.value='';renderResources();});
 qsAll('.category-tile').forEach(b=>b.addEventListener('click',()=>{category.value=b.dataset.category;query.value='';renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});}));
 qsAll('.quick-links button').forEach(b=>b.addEventListener('click',()=>{const cat=b.dataset.category;if(cat){category.value=cat;query.value='';}else query.value=b.dataset.query||'';renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});}));
-qs('#menuToggle').addEventListener('click',()=>{const open=qs('#menuToggle').getAttribute('aria-expanded')!=='true';qs('#menuToggle').setAttribute('aria-expanded',String(open));qs('#mainNav').classList.toggle('open',open);});
+qs('#menuToggle').addEventListener('click',()=>{const open=qs('#menuToggle').getAttribute('aria-expanded')!=='true';qs('#menuToggle').setAttribute('aria-expanded',String(open));qs('#mainNav').classList.toggle('open',open);qs('#menuToggle').setAttribute('aria-label',open?(ui.menuClose||'Close menu'):(ui.menuOpen||'Open menu'));});
+qsAll('#mainNav a').forEach(link=>link.addEventListener('click',()=>{qs('#mainNav').classList.remove('open');qs('#menuToggle').setAttribute('aria-expanded','false');qs('#menuToggle').setAttribute('aria-label',ui.menuOpen||'Open menu');}));
 langSelect.addEventListener('change',e=>{try{localStorage.setItem('lr-chinese-locale',e.target.value)}catch{}setLocale(e.target.value);});
 try{const saved=localStorage.getItem('lr-chinese-locale');if(saved&&homepageLocales.includes(saved))currentLocale=saved;}catch{}
 setLocale(currentLocale);
