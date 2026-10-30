@@ -44,6 +44,8 @@ async function metrics(page){
     goalCount:document.querySelectorAll('.goal-card').length,
     resourceCount:document.querySelectorAll('#resourceResults .resource-card').length,
     languageCount:document.querySelectorAll('#lang option').length,
+    preferenceControls:['#nativeLanguage','#targetScript','#phoneticSystem'].every(s=>!!document.querySelector(s)),
+    nativeLanguageOptionCount:document.querySelectorAll('#nativeLanguage option').length,
     logoLoaded:!!document.querySelector('.brand-logo')?.complete && (document.querySelector('.brand-logo')?.naturalWidth ?? 0)>0,
     menuVisible:getComputedStyle(document.querySelector('#mainNav')).display!=='none',
     menuToggleVisible:getComputedStyle(document.querySelector('#menuToggle')).display!=='none',
