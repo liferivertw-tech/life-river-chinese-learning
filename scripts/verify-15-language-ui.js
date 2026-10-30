@@ -90,7 +90,7 @@ async function checkLocale(page,locale,viewportName,viewport){
   assert(actual.gapTitle===flow.gapTitle,`${locale}/${viewportName}: gap title mismatch`);
   assert(actual.allResourcesTitle===flow.resourceTitle,`${locale}/${viewportName}: all-resources title mismatch`);
   assert(actual.aboutTitle===flow.aboutTitle,`${locale}/${viewportName}: about title mismatch`);
-  assert(actual.options.length===15 && actual.options.every((v,i)=>v===LOCALES[i]),`${locale}/${viewportName}: language selector coverage mismatch`);
+  assert(actual.options.length===16 && actual.options.every((v,i)=>v===LOCALES[i]),`${locale}/${viewportName}: language selector coverage mismatch`);
   assert(actual.categoryTexts.length===12 && actual.categoryTexts.every(Boolean),`${locale}/${viewportName}: category labels incomplete`);
   assert(actual.pathTexts.length===8 && actual.pathTexts.every(Boolean),`${locale}/${viewportName}: learning path labels incomplete`);
   assert(actual.goalTexts.length===8 && actual.goalTexts.every(Boolean),`${locale}/${viewportName}: goal labels incomplete`);
@@ -102,7 +102,7 @@ async function checkLocale(page,locale,viewportName,viewport){
   assert(m.categoryCount===12,`${locale}/${viewportName}: expected 12 category tiles`);
   assert(m.pathCount===8,`${locale}/${viewportName}: expected 8 path cards`);
   assert(m.goalCount===8,`${locale}/${viewportName}: expected 8 goal cards`);
-  assert(m.languageCount===15,`${locale}/${viewportName}: expected 15 language options`);
+  assert(m.languageCount===16,`${locale}/${viewportName}: expected 15 language options`);
   assert(m.logoLoaded,`${locale}/${viewportName}: brand logo did not load`);
   if(viewportName==='mobile'){
     assert(m.menuToggleVisible,`${locale}/mobile: menu toggle is hidden`);
@@ -156,7 +156,7 @@ try{
     results.push(await checkLocale(page,locale,'mobile',MOBILE));
   }
   const report={
-    build:'BUILD 05',
+    build:'BUILD 09',
     generatedAt:new Date().toISOString(),
     baseUrl:BASE_URL,
     locales:LOCALES,
