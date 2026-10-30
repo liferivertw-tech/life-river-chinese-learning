@@ -36,6 +36,24 @@ const brandLabels={
  es:['LIFE RIVER · CENTRO DE RECURSOS DE CHINO','LIFE RIVER · Centro de recursos de chino'],
  de:['LIFE RIVER · CHINESISCH-LERNZENTRUM','LIFE RIVER · Chinesisch-Lernzentrum']
 };
+const preferenceLabelsByLocale={
+ 'zh-TW':{title:'學習偏好',intro:'分別設定母語、學習字體與發音標記。',native:'母語',script:'學習字體',phonetic:'發音標記'},
+ 'zh-CN':{title:'学习偏好',intro:'分别设置母语、学习字体与发音标记。',native:'母语',script:'学习字体',phonetic:'发音标记'},
+ en:{title:'Learning preferences',intro:'Set your native language, learning script, and phonetic guide separately.',native:'Native language',script:'Learning script',phonetic:'Phonetic guide'},
+ vi:{title:'Tùy chọn học tập',intro:'Cài đặt riêng ngôn ngữ mẹ đẻ, chữ viết và ký hiệu phát âm.',native:'Ngôn ngữ mẹ đẻ',script:'Chữ viết học tập',phonetic:'Ký hiệu phát âm'},
+ id:{title:'Preferensi belajar',intro:'Atur bahasa ibu, aksara pembelajaran, dan panduan pelafalan secara terpisah.',native:'Bahasa ibu',script:'Aksara pembelajaran',phonetic:'Panduan pelafalan'},
+ th:{title:'การตั้งค่าการเรียน',intro:'ตั้งค่าภาษาแม่ รูปแบบอักษร และคำอ่านแยกกัน',native:'ภาษาแม่',script:'รูปแบบอักษร',phonetic:'คำอ่าน'},
+ fil:{title:'Mga kagustuhan sa pag-aaral',intro:'Itakda nang hiwalay ang sariling wika, anyo ng titik, at gabay sa bigkas.',native:'Sariling wika',script:'Anyo ng titik',phonetic:'Gabay sa bigkas'},
+ ja:{title:'学習設定',intro:'母語、学習する字体、発音表記を個別に設定します。',native:'母語',script:'学習する字体',phonetic:'発音表記'},
+ ko:{title:'학습 설정',intro:'모국어, 학습 문자, 발음 표기를 각각 설정합니다.',native:'모국어',script:'학습 문자',phonetic:'발음 표기'},
+ my:{title:'သင်ယူမှု ဆက်တင်များ',intro:'မိခင်ဘာသာ၊ သင်ယူမည့် စာလုံးပုံစံနှင့် အသံထွက်အညွှန်းကို သီးခြားသတ်မှတ်ပါ။',native:'မိခင်ဘာသာ',script:'စာလုံးပုံစံ',phonetic:'အသံထွက်အညွှန်း'},
+ km:{title:'ការកំណត់ការសិក្សា',intro:'កំណត់ភាសាកំណើត អក្សរសិក្សា និងសញ្ញាបញ្ចេញសំឡេងដោយឡែក។',native:'ភាសាកំណើត',script:'អក្សរសិក្សា',phonetic:'សញ្ញាបញ្ចេញសំឡេង'},
+ ms:{title:'Pilihan pembelajaran',intro:'Tetapkan bahasa ibunda, tulisan pembelajaran dan panduan sebutan secara berasingan.',native:'Bahasa ibunda',script:'Tulisan pembelajaran',phonetic:'Panduan sebutan'},
+ hi:{title:'सीखने की प्राथमिकताएँ',intro:'मातृभाषा, सीखने की लिपि और उच्चारण संकेत अलग-अलग चुनें।',native:'मातृभाषा',script:'सीखने की लिपि',phonetic:'उच्चारण संकेत'},
+ fr:{title:"Préférences d’apprentissage",intro:"Réglez séparément la langue maternelle, l’écriture étudiée et l’aide phonétique.",native:'Langue maternelle',script:'Écriture étudiée',phonetic:'Aide phonétique'},
+ es:{title:'Preferencias de aprendizaje',intro:'Configura por separado tu lengua materna, la escritura y la guía fonética.',native:'Lengua materna',script:'Escritura de estudio',phonetic:'Guía fonética'},
+ de:{title:'Lerneinstellungen',intro:'Muttersprache, Lernschrift und Aussprachehilfe getrennt einstellen.',native:'Muttersprache',script:'Lernschrift',phonetic:'Aussprachehilfe'}
+};
 renderShell(qs('#app'),categories);
 const langSelect=qs('#lang');
 langs.forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;langSelect.append(o);});
