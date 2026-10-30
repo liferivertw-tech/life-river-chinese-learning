@@ -1,0 +1,23 @@
+name: Speech Recognition API CI
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths: ['services/asr-api/**', '.github/workflows/asr-api.yml']
+  pull_request:
+    branches: [main, 'codex/**']
+    paths: ['services/asr-api/**', '.github/workflows/asr-api.yml']
+jobs:
+  test-asr-api:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/asr-api
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: services/asr-api/requirements.txt
+      - run: pip install -r requirements.txt
+      - run: pytest -q
