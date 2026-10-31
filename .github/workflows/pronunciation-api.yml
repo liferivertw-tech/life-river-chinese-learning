@@ -1,0 +1,23 @@
+name: Pronunciation API CI
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths: ['services/pronunciation-api/**', '.github/workflows/pronunciation-api.yml']
+  pull_request:
+    branches: [main, 'codex/**']
+    paths: ['services/pronunciation-api/**', '.github/workflows/pronunciation-api.yml']
+jobs:
+  test-pronunciation-api:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/pronunciation-api
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: services/pronunciation-api/requirements.txt
+      - run: pip install -r requirements.txt
+      - run: pytest -q
