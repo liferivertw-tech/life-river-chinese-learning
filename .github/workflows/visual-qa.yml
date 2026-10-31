@@ -30,6 +30,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-11-16-language-visual-qa
-          path: artifacts/visual-16-language/
+          path: artifacts/build-11-homepage-qa/
           if-no-files-found: warn
           retention-days: 14
