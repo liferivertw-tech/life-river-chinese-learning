@@ -1,0 +1,4 @@
+import {technologyRegistry} from '../src/technology-registry.js';
+const errors=[];const warnings=[];const ids=new Set();
+for(const item of technologyRegistry){if(!item.id||ids.has(item.id))errors.push('duplicate/missing id: '+item.id);ids.add(item.id);if(!item.source)errors.push(item.id+': missing source');if(!item.licenseScope)errors.push(item.id+': missing license scope');if(!item.compatibility)errors.push(item.id+': missing compatibility notes');if(!item.checkedAt)errors.push(item.id+': missing review date');if(item.commercialUse?.startsWith('blocked')||item.status==='rights-review-required')warnings.push(item.id+': commercial integration blocked pending rights review');for(const dep of item.dataDependencies||[])if(dep.commercialUse?.startsWith('blocked'))warnings.push(item.id+'/'+dep.name+': model/data license must be checked separately');}
+console.log(JSON.stringify({total:technologyRegistry.length,errors,warnings},null,2));if(errors.length)process.exitCode=1;
