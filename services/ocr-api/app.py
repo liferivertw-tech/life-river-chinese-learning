@@ -49,7 +49,7 @@ async def recognize_image(file:UploadFile=File(...)):
         with Image.open(temp_path) as image: image.verify()
         results=get_ocr().predict(input=temp_path)
         lines=normalize_results(results)
-        return {'lines':lines,'text':'\\n'.join(item['text'] for item in lines),'engine':'PaddleOCR 3.7.0','detector':'PP-OCRv5_mobile_det','recognizer':'PP-OCRv5_mobile_rec','notice':'辨識結果可能有錯，請對照原圖校對。圖片僅暫存處理，請求結束後刪除。'}
+        return {'lines':lines,'text':'\n'.join(item['text'] for item in lines),'engine':'PaddleOCR 3.7.0','detector':'PP-OCRv5_mobile_det','recognizer':'PP-OCRv5_mobile_rec','notice':'辨識結果可能有錯，請對照原圖校對。圖片僅暫存處理，請求結束後刪除。'}
     except HTTPException: raise
     except Exception as exc: raise HTTPException(status_code=422,detail='無法辨識圖片，請使用清晰、正向且文字可讀的圖片。') from exc
     finally:
