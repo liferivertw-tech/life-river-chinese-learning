@@ -22,7 +22,7 @@ def test_ocr_endpoint_returns_recognized_text(monkeypatch,tmp_path):
     monkeypatch.setattr(ocr_app,'get_ocr',lambda:FakeOCR())
     response=client.post('/api/ocr',files={'file':('test.png',image_path.read_bytes(),'image/png')})
     assert response.status_code==200
-    assert response.json()['text']=='你好\\n繁體中文'
+    assert response.json()['text']=='你好\n繁體中文'
 
 def test_rejects_unsupported_image_type():
     response=client.post('/api/ocr',files={'file':('test.gif',b'GIF89a','image/gif')})
