@@ -6,3 +6,6 @@ test('Taiwan Traditional Chinese native defaults to Traditional and Zhuyin',()=>
 test('Simplified Chinese native defaults to comparison and Pinyin',()=>{const p=defaultsForNativeLanguage('zh-CN');assert.equal(p.targetScript,'both');assert.equal(p.phoneticSystem,'pinyin');});
 test('invalid preference values safely fall back',()=>{const p=normalizePreferences({nativeLanguage:'bad',targetScript:'bad',phoneticSystem:'bad'});assert.equal(p.nativeLanguage,preferenceDefaults.nativeLanguage);assert.equal(p.targetScript,preferenceDefaults.targetScript);assert.equal(p.phoneticSystem,preferenceDefaults.phoneticSystem);});
 test('preferences persist through a storage adapter',()=>{let value=null;const storage={getItem:()=>value,setItem:(_k,v)=>{value=v}};const saved=savePreferences(storage,{nativeLanguage:'zh-CN',targetScript:'both'});assert.deepEqual(loadPreferences(storage),saved);});
+
+test('Taiwan Mandarin variety is an independent saved preference',()=>{const p=normalizePreferences({nativeLanguage:'en',interfaceLanguage:'zh-TW',spokenVariety:'mandarin-regional'});assert.equal(p.nativeLanguage,'en');assert.equal(p.spokenVariety,'mandarin-regional');});
+test('invalid spoken variety safely falls back to Taiwan Mandarin',()=>{assert.equal(normalizePreferences({spokenVariety:'unknown'}).spokenVariety,'mandarin-standard');});
