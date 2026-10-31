@@ -8,14 +8,17 @@ import {coverageSummary} from './coverage-matrix.js';
 import {renderShell} from './ui-shell.js';
 import {onboardingI18n} from './onboarding-i18n.js';
 import {recommendationI18n} from './recommendation-i18n.js';
+import {loadPreferences,savePreferences,defaultsForNativeLanguage,preferenceOptions} from './learner-preferences.js';
 
-const langs=[['zh-TW','繁體中文'],['en','English'],['vi','Tiếng Việt'],['id','Bahasa Indonesia'],['th','ไทย'],['fil','Filipino'],['ja','日本語'],['ko','한국어'],['my','မြန်မာ'],['km','ភាសាខ្មែរ'],['ms','Bahasa Melayu'],['hi','हिन्दी'],['fr','Français'],['es','Español'],['de','Deutsch']];
+const langs=[['zh-TW','繁體中文'],['zh-CN','简体中文（中国大陆）'],['en','English'],['vi','Tiếng Việt'],['id','Bahasa Indonesia'],['th','ไทย'],['fil','Filipino'],['ja','日本語'],['ko','한국어'],['my','မြန်မာ'],['km','ភាសាខ្មែរ'],['ms','Bahasa Melayu'],['hi','हिन्दी'],['fr','Français'],['es','Español'],['de','Deutsch']];
 const goalMap={zero:['sound'],daily:['taiwan'],speaking:['skills'],literacy:['characters','reading'],taiwan:['taiwan'],work:['work-study'],traditional:['traditional'],tocfl:['tocfl']};
 const goalEntries=[['zero','🧭'],['daily','🛍️'],['speaking','🎧'],['literacy','📚'],['taiwan','🏮'],['work','💼'],['traditional','ㄅ'],['tocfl','🎓']];
 const qs=s=>document.querySelector(s),qsAll=s=>document.querySelectorAll(s);
 let currentLocale='zh-TW',ui={},selectedGoal=null,selectedLevel='入門';
+let learnerPreferences=loadPreferences(globalThis.localStorage);
 const brandLabels={
  'zh-TW':['LIFE RIVER · 中文學習資源網','生命河｜中文學習資源網'],
+ 'zh-CN':['LIFE RIVER · 中文学习资源网','生命河｜中文学习资源网'],
  en:['LIFE RIVER · CHINESE LEARNING HUB','LIFE RIVER · Chinese Learning Hub'],
  vi:['LIFE RIVER · TRUNG TÂM HỌC TIẾNG TRUNG','LIFE RIVER · Trung tâm học tiếng Trung'],
  id:['LIFE RIVER · PUSAT BELAJAR MANDARIN','LIFE RIVER · Pusat Belajar Mandarin'],
@@ -30,6 +33,24 @@ const brandLabels={
  fr:['LIFE RIVER · CENTRE DE RESSOURCES DE CHINOIS','LIFE RIVER · Centre de ressources de chinois'],
  es:['LIFE RIVER · CENTRO DE RECURSOS DE CHINO','LIFE RIVER · Centro de recursos de chino'],
  de:['LIFE RIVER · CHINESISCH-LERNZENTRUM','LIFE RIVER · Chinesisch-Lernzentrum']
+};
+const preferenceLabelsByLocale={
+ 'zh-TW':{title:'學習偏好',intro:'分別設定母語、學習字體與發音標記。',native:'母語',script:'學習字體',phonetic:'發音標記'},
+ 'zh-CN':{title:'学习偏好',intro:'分别设置母语、学习字体与发音标记。',native:'母语',script:'学习字体',phonetic:'发音标记'},
+ en:{title:'Learning preferences',intro:'Set your native language, learning script, and phonetic guide separately.',native:'Native language',script:'Learning script',phonetic:'Phonetic guide'},
+ vi:{title:'Tùy chọn học tập',intro:'Cài đặt riêng ngôn ngữ mẹ đẻ, chữ viết và ký hiệu phát âm.',native:'Ngôn ngữ mẹ đẻ',script:'Chữ viết học tập',phonetic:'Ký hiệu phát âm'},
+ id:{title:'Preferensi belajar',intro:'Atur bahasa ibu, aksara pembelajaran, dan panduan pelafalan secara terpisah.',native:'Bahasa ibu',script:'Aksara pembelajaran',phonetic:'Panduan pelafalan'},
+ th:{title:'การตั้งค่าการเรียน',intro:'ตั้งค่าภาษาแม่ รูปแบบอักษร และคำอ่านแยกกัน',native:'ภาษาแม่',script:'รูปแบบอักษร',phonetic:'คำอ่าน'},
+ fil:{title:'Mga kagustuhan sa pag-aaral',intro:'Itakda nang hiwalay ang sariling wika, anyo ng titik, at gabay sa bigkas.',native:'Sariling wika',script:'Anyo ng titik',phonetic:'Gabay sa bigkas'},
+ ja:{title:'学習設定',intro:'母語、学習する字体、発音表記を個別に設定します。',native:'母語',script:'学習する字体',phonetic:'発音表記'},
+ ko:{title:'학습 설정',intro:'모국어, 학습 문자, 발음 표기를 각각 설정합니다.',native:'모국어',script:'학습 문자',phonetic:'발음 표기'},
+ my:{title:'သင်ယူမှု ဆက်တင်များ',intro:'မိခင်ဘာသာ၊ သင်ယူမည့် စာလုံးပုံစံနှင့် အသံထွက်အညွှန်းကို သီးခြားသတ်မှတ်ပါ။',native:'မိခင်ဘာသာ',script:'စာလုံးပုံစံ',phonetic:'အသံထွက်အညွှန်း'},
+ km:{title:'ការកំណត់ការសិក្សា',intro:'កំណត់ភាសាកំណើត អក្សរសិក្សា និងសញ្ញាបញ្ចេញសំឡេងដោយឡែក។',native:'ភាសាកំណើត',script:'អក្សរសិក្សា',phonetic:'សញ្ញាបញ្ចេញសំឡេង'},
+ ms:{title:'Pilihan pembelajaran',intro:'Tetapkan bahasa ibunda, tulisan pembelajaran dan panduan sebutan secara berasingan.',native:'Bahasa ibunda',script:'Tulisan pembelajaran',phonetic:'Panduan sebutan'},
+ hi:{title:'सीखने की प्राथमिकताएँ',intro:'मातृभाषा, सीखने की लिपि और उच्चारण संकेत अलग-अलग चुनें।',native:'मातृभाषा',script:'सीखने की लिपि',phonetic:'उच्चारण संकेत'},
+ fr:{title:"Préférences d’apprentissage",intro:"Réglez séparément la langue maternelle, l’écriture étudiée et l’aide phonétique.",native:'Langue maternelle',script:'Écriture étudiée',phonetic:'Aide phonétique'},
+ es:{title:'Preferencias de aprendizaje',intro:'Configura por separado tu lengua materna, la escritura y la guía fonética.',native:'Lengua materna',script:'Escritura de estudio',phonetic:'Guía fonética'},
+ de:{title:'Lerneinstellungen',intro:'Muttersprache, Lernschrift und Aussprachehilfe getrennt einstellen.',native:'Muttersprache',script:'Lernschrift',phonetic:'Aussprachehilfe'}
 };
 renderShell(qs('#app'),categories);
 const langSelect=qs('#lang');
@@ -181,6 +202,7 @@ function renderResources(){
   g.other.forEach(r=>grid.append(renderResourceCard(r,'other')));details.append(grid);results.append(details);
  }
 }
+function renderLearnerPreferences(){const labels=preferenceLabelsByLocale[currentLocale]||{native:'Native language',script:'Learning script',phonetic:'Phonetic guide',title:'Learning preferences',intro:'Set your preferences independently.'};qs('#preferencesTitle').textContent=labels.title;qs('#preferencesIntro').textContent=labels.intro;const native=qs('#nativeLanguage'),script=qs('#targetScript'),phonetic=qs('#phoneticSystem');native.replaceChildren(...preferenceOptions.nativeLanguage.map(([v,t])=>new Option(t,v)));script.replaceChildren(new Option(ui.scriptTraditional||'繁體中文','traditional'),new Option(ui.scriptSimplified||'简体中文','simplified'),new Option(ui.scriptBoth||'繁簡對照','both'));phonetic.replaceChildren(new Option(ui.phoneticZhuyin||'注音符號','zhuyin'),new Option(ui.phoneticPinyin||'漢語拼音','pinyin'),new Option(ui.phoneticNone||'不顯示','none'));qs('#nativeLanguageLabel').textContent=labels.native;qs('#targetScriptLabel').textContent=labels.script;qs('#phoneticSystemLabel').textContent=labels.phonetic;native.value=learnerPreferences.nativeLanguage;script.value=learnerPreferences.targetScript;phonetic.value=learnerPreferences.phoneticSystem;}
 function setLocale(code){
  currentLocale=code;ui=Object.assign({},homepageMessages(code),homepageFlow(code),onboardingI18n[code]||onboardingI18n.en,recommendationI18n[code]||recommendationI18n.en);document.documentElement.lang=code;document.title='LIFE RIVER · '+ui.categories;
  [ui.navHome,ui.navCategories,ui.navFeatured,ui.navAbout].forEach((v,i)=>{const a=qsAll('.site-nav a')[i];if(a)a.textContent=v;});
@@ -203,7 +225,7 @@ function setLocale(code){
  level.replaceChildren(new Option(ui.allLevels,''),...['入門','初級','中級','高級','多級'].map(v=>new Option(ui.levels[v]||v,v)));
  category.value=previousCategory;level.value=previousLevel;
  qs('#clearFilters').textContent=ui.clear;qs('#about h2').textContent=ui.aboutTitle;qs('#about p:last-child').textContent=ui.aboutBody;qs('#notice').textContent=ui.notice;
- renderGoals();renderPath();renderFeatured();renderFeatures();renderGap();renderResources();langSelect.value=code;
+ renderGoals();renderPath();renderFeatured();renderFeatures();renderGap();renderResources();renderLearnerPreferences();langSelect.value=code;
 }
 qs('#searchForm').addEventListener('submit',e=>{e.preventDefault();renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});});
 query.addEventListener('input',renderResources);category.addEventListener('change',renderResources);level.addEventListener('change',renderResources);
@@ -213,6 +235,7 @@ qsAll('.category-tile').forEach(b=>b.addEventListener('click',()=>{category.valu
 qsAll('.quick-links button').forEach(b=>b.addEventListener('click',()=>{const cat=b.dataset.category;if(cat){category.value=cat;query.value='';}else query.value=b.dataset.query||'';renderResources();qs('#allResources').scrollIntoView({behavior:'smooth'});}));
 qs('#menuToggle').addEventListener('click',()=>{const open=qs('#menuToggle').getAttribute('aria-expanded')!=='true';qs('#menuToggle').setAttribute('aria-expanded',String(open));qs('#mainNav').classList.toggle('open',open);qs('#menuToggle').setAttribute('aria-label',open?(ui.menuClose||'Close menu'):(ui.menuOpen||'Open menu'));});
 qsAll('#mainNav a').forEach(link=>link.addEventListener('click',()=>{qs('#mainNav').classList.remove('open');qs('#menuToggle').setAttribute('aria-expanded','false');qs('#menuToggle').setAttribute('aria-label',ui.menuOpen||'Open menu');}));
-langSelect.addEventListener('change',e=>{try{localStorage.setItem('lr-chinese-locale',e.target.value)}catch{}setLocale(e.target.value);});
+langSelect.addEventListener('change',e=>{try{localStorage.setItem('lr-chinese-locale',e.target.value)}catch{}learnerPreferences=savePreferences(globalThis.localStorage,{...learnerPreferences,interfaceLanguage:e.target.value});setLocale(e.target.value);});
+['nativeLanguage','targetScript','phoneticSystem'].forEach(id=>qs('#'+id).addEventListener('change',e=>{if(id==='nativeLanguage')learnerPreferences=defaultsForNativeLanguage(e.target.value);else learnerPreferences={...learnerPreferences,[id]:e.target.value};learnerPreferences=savePreferences(globalThis.localStorage,learnerPreferences);renderLearnerPreferences();}));
 try{const saved=localStorage.getItem('lr-chinese-locale');if(saved&&homepageLocales.includes(saved))currentLocale=saved;}catch{}
 setLocale(currentLocale);

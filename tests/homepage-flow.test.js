@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {homepageFlow,flowLocales} from '../src/homepage-flow-i18n.js';
 import {homepageMessages} from '../src/homepage-i18n.js';
 
-const locales=['zh-TW','en','vi','id','th','fil','ja','ko','my','km','ms','hi','fr','es','de'];
-test('homepage flow covers all 15 supported interface languages',()=>{
+const locales=['zh-TW','zh-CN','en','vi','id','th','fil','ja','ko','my','km','ms','hi','fr','es','de'];
+test('homepage flow covers all 16 supported interface languages',()=>{
  assert.deepEqual(flowLocales,locales);
  for(const locale of locales){
   const d=homepageFlow(locale);

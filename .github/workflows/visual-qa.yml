@@ -23,13 +23,13 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Build
         run: npm run build
-      - name: 15-language desktop/mobile visual QA
+      - name: 16-language desktop/mobile visual QA
         run: npm run verify:visual
       - name: Upload visual evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: build-05-15-language-visual-qa
-          path: artifacts/visual-15-language/
+          name: build-11-16-language-visual-qa
+          path: artifacts/visual-16-language/
           if-no-files-found: warn
           retention-days: 14
