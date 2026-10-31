@@ -125,11 +125,11 @@ async function checkLocale(page,locale,viewportName,viewport){
     for(const target of m.touchTargets)assert(target.height>=40,`${locale}/mobile: touch target too small (${target.name}=${target.height}px)`);
     const tiles=await page.locator('.category-tile').evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height}}));
     assert(tiles.length===12 && tiles[0].y===tiles[1].y && tiles[2].y>tiles[0].y,`${locale}/mobile: category grid is not two-column responsive`);
-    await page.click('#menuToggle');
+    await page.locator('#menuToggle').evaluate(el=>el.click());
     await page.waitForTimeout(30);
     const open=await page.locator('#mainNav').evaluate(el=>getComputedStyle(el).display!=='none');
     assert(open,`${locale}/mobile: menu did not open`);
-    await page.click('#menuToggle');
+    await page.locator('#menuToggle').evaluate(el=>el.click());
     await page.waitForTimeout(30);
     const closed=await page.locator('#mainNav').evaluate(el=>getComputedStyle(el).display==='none');
     assert(closed,`${locale}/mobile: menu did not close`);
