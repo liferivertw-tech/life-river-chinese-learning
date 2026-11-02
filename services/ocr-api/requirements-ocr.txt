@@ -1,0 +1,4 @@
+-r requirements.txt
+paddleocr==3.7.0
+# Install a compatible CPU/GPU paddlepaddle wheel separately using the official selector:
+# https://www.paddlepaddle.org.cn/install/quick
